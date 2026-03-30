@@ -8,11 +8,12 @@ require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const conversationRoutes = require("./routes/conversationRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
+  cors: { origin: process.env.CLIENT_URL || "http://localhost:3000", methods: ["GET", "POST"] },
 });
 
 app.use(cors());
@@ -23,7 +24,7 @@ app.use("/api/conversations", conversationRoutes);
 app.use("/api/messages", messageRoutes);
 
 app.get("/", (req, res) => {
-  res.json({ message: "WhatsApp Clone API is running 🚀" });
+  res.json({ message: "WhatsApp Clone API is running " });
 });
 
 const onlineUsers = new Map();
@@ -34,7 +35,6 @@ io.on("connection", (socket) => {
   socket.on("user_online", (userId) => {
     onlineUsers.set(userId, socket.id);
     io.emit("online_users", Array.from(onlineUsers.keys()));
-    console.log(`User ${userId} is online`);
   });
 
   socket.on("join_conversation", (conversationId) => {
@@ -47,17 +47,17 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     for (const [userId, socketId] of onlineUsers.entries()) {
-      if (socketId === socket.id) {
-        onlineUsers.delete(userId);
-        break;
-      }
+      if (socketId === socket.id) { onlineUsers.delete(userId); break; }
     }
     io.emit("online_users", Array.from(onlineUsers.keys()));
-    console.log("🔴 User disconnected:", socket.id);
+    console.log(" User disconnected:", socket.id);
   });
 });
 
+app.use(notFound);
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 5001;
 server.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(` Server running on http://localhost:${PORT}`);
 });
