@@ -12,10 +12,7 @@ const messageRoutes = require("./routes/messageRoutes");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
+  cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
 });
 
 app.use(cors());
@@ -29,23 +26,33 @@ app.get("/", (req, res) => {
   res.json({ message: "WhatsApp Clone API is running 🚀" });
 });
 
-// Socket.IO
+const onlineUsers = new Map();
+
 io.on("connection", (socket) => {
   console.log("🟢 User connected:", socket.id);
 
-  // Join a conversation room
-  socket.on("join_conversation", (conversationId) => {
-    socket.join(`conversation_${conversationId}`);
-    console.log(`User ${socket.id} joined conversation_${conversationId}`);
+  socket.on("user_online", (userId) => {
+    onlineUsers.set(userId, socket.id);
+    io.emit("online_users", Array.from(onlineUsers.keys()));
+    console.log(`User ${userId} is online`);
   });
 
-  // Send a message
+  socket.on("join_conversation", (conversationId) => {
+    socket.join(`conversation_${conversationId}`);
+  });
+
   socket.on("send_message", (data) => {
     io.to(`conversation_${data.conversationId}`).emit("receive_message", data);
   });
 
-  // Disconnect
   socket.on("disconnect", () => {
+    for (const [userId, socketId] of onlineUsers.entries()) {
+      if (socketId === socket.id) {
+        onlineUsers.delete(userId);
+        break;
+      }
+    }
+    io.emit("online_users", Array.from(onlineUsers.keys()));
     console.log("🔴 User disconnected:", socket.id);
   });
 });
