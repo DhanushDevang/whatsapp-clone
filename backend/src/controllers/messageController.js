@@ -1,12 +1,10 @@
 const pool = require("../config/db");
 
-// Send a message
 const sendMessage = async (req, res) => {
   try {
-    const { conversationId, content } = req.body;
+    const { conversationId, content, message_type = "text", media_data } = req.body;
     const senderId = req.user.id;
 
-    // Check if user is part of this conversation
     const participant = await pool.query(
       "SELECT * FROM conversation_participants WHERE conversation_id = $1 AND user_id = $2",
       [conversationId, senderId]
@@ -16,12 +14,11 @@ const sendMessage = async (req, res) => {
       return res.status(403).json({ message: "Not a participant of this conversation" });
     }
 
-    // Insert message
     const message = await pool.query(
-      `INSERT INTO messages (conversation_id, sender_id, content)
-       VALUES ($1, $2, $3)
-       RETURNING id, conversation_id, sender_id, content, created_at`,
-      [conversationId, senderId, content]
+      `INSERT INTO messages (conversation_id, sender_id, content, message_type, media_data)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, conversation_id, sender_id, content, message_type, media_data, created_at`,
+      [conversationId, senderId, content, message_type, media_data || null]
     );
 
     res.status(201).json(message.rows[0]);
@@ -30,7 +27,6 @@ const sendMessage = async (req, res) => {
   }
 };
 
-// Get messages for a conversation
 const getMessages = async (req, res) => {
   try {
     const { conversationId } = req.params;
@@ -38,7 +34,6 @@ const getMessages = async (req, res) => {
     const limit = parseInt(req.query.limit) || 50;
     const offset = parseInt(req.query.offset) || 0;
 
-    // Check if user is part of this conversation
     const participant = await pool.query(
       "SELECT * FROM conversation_participants WHERE conversation_id = $1 AND user_id = $2",
       [conversationId, userId]
@@ -48,11 +43,12 @@ const getMessages = async (req, res) => {
       return res.status(403).json({ message: "Not a participant of this conversation" });
     }
 
-    // Get messages with sender info
     const messages = await pool.query(
-      `SELECT 
+      `SELECT
         m.id,
         m.content,
+        m.message_type,
+        m.media_data,
         m.created_at,
         m.sender_id,
         u.username AS sender_username
