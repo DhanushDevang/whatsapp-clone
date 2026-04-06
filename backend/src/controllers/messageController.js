@@ -66,4 +66,35 @@ const getMessages = async (req, res) => {
   }
 };
 
-module.exports = { sendMessage, getMessages };
+const deleteForAll = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const msg = await pool.query("SELECT * FROM messages WHERE id = $1", [id]);
+    if (msg.rows.length === 0) return res.status(404).json({ message: "Message not found" });
+    if (msg.rows[0].sender_id !== userId) return res.status(403).json({ message: "Not authorized" });
+    await pool.query(
+      "UPDATE messages SET deleted_for_all = TRUE, content = $1 WHERE id = $2",
+      ["This message was deleted", id]
+    );
+    res.json({ success: true, messageId: id });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const deleteForMe = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    await pool.query(
+      "UPDATE messages SET deleted_for = array_append(deleted_for, $1::text) WHERE id = $2",
+      [String(userId), id]
+    );
+    res.json({ success: true, messageId: id });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { sendMessage, getMessages, deleteForAll, deleteForMe };
