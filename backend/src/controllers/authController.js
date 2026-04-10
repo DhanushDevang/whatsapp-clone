@@ -1,6 +1,8 @@
 const pool = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const logger = require("../config/logger");
+const { authAttemptsTotal } = require("../config/metrics");
 
 const register = async (req, res) => {
   try {
@@ -28,6 +30,8 @@ const register = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    logger.info("User registered", { userId: newUser.rows[0].id, email });
+    authAttemptsTotal.inc({ type: "register", status: "success" });
     res.status(201).json({ user: newUser.rows[0], token });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -57,6 +61,8 @@ const login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    logger.info("User logged in", { userId: user.rows[0].id, email });
+    authAttemptsTotal.inc({ type: "login", status: "success" });
     res.json({
       user: {
         id: user.rows[0].id,

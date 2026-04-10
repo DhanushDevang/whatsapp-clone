@@ -1,9 +1,12 @@
 const pool = require("../config/db");
+const logger = require("../config/logger");
+const { messagesSentTotal, messageDeliveryLatency } = require("../config/metrics");
 
 const sendMessage = async (req, res) => {
   try {
     const { conversationId, content, message_type = "text", media_data } = req.body;
     const senderId = req.user.id;
+    const start = Date.now();
 
     const participant = await pool.query(
       "SELECT * FROM conversation_participants WHERE conversation_id = $1 AND user_id = $2",
@@ -21,6 +24,16 @@ const sendMessage = async (req, res) => {
       [conversationId, senderId, content, message_type, media_data || null]
     );
 
+    const duration = Date.now() - start;
+    messagesSentTotal.inc({ type: message_type || "text" });
+    messageDeliveryLatency.observe(duration);
+    logger.info("Message sent", {
+      messageId: message.rows[0].id,
+      conversationId,
+      senderId,
+      type: message_type || "text",
+      duration: `${duration}ms`,
+    });
     res.status(201).json(message.rows[0]);
   } catch (err) {
     res.status(500).json({ message: err.message });
