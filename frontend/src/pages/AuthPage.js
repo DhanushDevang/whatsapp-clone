@@ -9,13 +9,87 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
+  // Email validation - Gmail only
+  const validateEmail = (email) => {
+    // Check for spaces
+    if (email.includes(" ")) {
+      return { valid: false, message: "Email cannot contain spaces" };
+    }
+    
+    // Check if it's Gmail
+    if (!email.endsWith("@gmail.com")) {
+      return { valid: false, message: "Only Gmail accounts are allowed (@gmail.com)" };
+    }
+    
+    // Check email format (basic validation)
+    const emailRegex = /^[^\s@]+@gmail\.com$/;
+    if (!emailRegex.test(email)) {
+      return { valid: false, message: "Please enter a valid Gmail address" };
+    }
+    
+    return { valid: true, message: "" };
+  };
+
+  // Password validation - 8+ chars with special characters
+  const validatePassword = (password) => {
+    // Check length
+    if (password.length < 8) {
+      return { valid: false, message: "Password must be at least 8 characters long" };
+    }
+    
+    // Check for special characters
+    const specialChars = /[!@#$%^&*]/;
+    if (!specialChars.test(password)) {
+      return { valid: false, message: "Password must contain at least one special character (!@#$%^&*)" };
+    }
+    
+    return { valid: true, message: "" };
+  };
+
+  // Username validation (for registration)
+  const validateUsername = (username) => {
+    if (!username || username.trim().length < 3) {
+      return { valid: false, message: "Username must be at least 3 characters long" };
+    }
+    if (username.includes(" ")) {
+      return { valid: false, message: "Username cannot contain spaces" };
+    }
+    return { valid: true, message: "" };
+  };
+
   const handleSubmit = async () => {
     setError("");
-    setLoading(true);
+    
     try {
+      // Validate email
+      const emailValidation = validateEmail(form.email);
+      if (!emailValidation.valid) {
+        setError(emailValidation.message);
+        return;
+      }
+
+      // Validate password
+      const passwordValidation = validatePassword(form.password);
+      if (!passwordValidation.valid) {
+        setError(passwordValidation.message);
+        return;
+      }
+
+      // Validate username for registration
+      if (!isLogin) {
+        const usernameValidation = validateUsername(form.username);
+        if (!usernameValidation.valid) {
+          setError(usernameValidation.message);
+          return;
+        }
+      }
+
+      // All validations passed, proceed with API call
+      setLoading(true);
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
       const url = isLogin
-        ? "https://whatsapp-clone-production-0db0.up.railway.app/api/auth/login"
-        : "https://whatsapp-clone-production-0db0.up.railway.app/api/auth/register";
+        ? `${API_URL}/api/auth/login`
+        : `${API_URL}/api/auth/register`;
       const payload = isLogin ? { email: form.email, password: form.password } : form;
       const res = await axios.post(url, payload);
       login(res.data.user, res.data.token);
@@ -58,16 +132,44 @@ export default function AuthPage() {
             {!isLogin && (
               <div style={s.inputGroup}>
                 <label style={s.label}>Username</label>
-                <input style={s.input} placeholder="Enter your username" value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} />
+                <input 
+                  style={s.input} 
+                  placeholder="Enter your username" 
+                  value={form.username} 
+                  onChange={(e) => setForm({ ...form, username: e.target.value })} 
+                />
               </div>
             )}
             <div style={s.inputGroup}>
               <label style={s.label}>Email</label>
-              <input style={s.input} placeholder="Enter your email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              <input 
+                style={s.input} 
+                placeholder="Enter your Gmail address" 
+                type="email" 
+                value={form.email} 
+                onChange={(e) => setForm({ ...form, email: e.target.value })} 
+              />
+              {!isLogin && form.email && (
+                <div style={{ fontSize: "12px", marginTop: "4px", color: validateEmail(form.email).valid ? "#25D366" : "#e53935" }}>
+                  {validateEmail(form.email).valid ? "✓ Valid Gmail" : validateEmail(form.email).message}
+                </div>
+              )}
             </div>
             <div style={s.inputGroup}>
               <label style={s.label}>Password</label>
-              <input style={s.input} placeholder="Enter your password" type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} onKeyDown={(e) => e.key === "Enter" && handleSubmit()} />
+              <input 
+                style={s.input} 
+                placeholder="Enter your password (8+ chars with !@#$%^&*)" 
+                type="password" 
+                value={form.password} 
+                onChange={(e) => setForm({ ...form, password: e.target.value })} 
+                onKeyDown={(e) => e.key === "Enter" && handleSubmit()} 
+              />
+              {!isLogin && form.password && (
+                <div style={{ fontSize: "12px", marginTop: "4px", color: validatePassword(form.password).valid ? "#25D366" : "#e53935" }}>
+                  {validatePassword(form.password).valid ? "✓ Strong password" : validatePassword(form.password).message}
+                </div>
+              )}
             </div>
             {error && <div style={s.error}>{error}</div>}
             <button style={{ ...s.btn, opacity: loading ? 0.7 : 1 }} onClick={handleSubmit} disabled={loading}>

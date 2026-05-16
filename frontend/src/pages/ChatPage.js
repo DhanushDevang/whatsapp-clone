@@ -66,7 +66,7 @@ export default function ChatPage() {
   const t = dark ? darkTheme : lightTheme;
 
   const api = axios.create({
-    baseURL: "https://whatsapp-clone-production-0db0.up.railway.app/api",
+    baseURL: (process.env.REACT_APP_API_URL || "http://localhost:5001") + "/api",
     headers: { Authorization: `Bearer ${token}` },
   });
 
