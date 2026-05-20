@@ -3,11 +3,13 @@ import { useAuth } from "../context/AuthContext";
 
 const API_URL = "/api";
 
+
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
 
   const validateEmail = (email: string) => {
@@ -106,15 +108,24 @@ export default function AuthPage() {
             </div>
             <div style={s.inputGroup}>
               <label style={s.label}>Password</label>
-              <input
-                style={s.input}
-                placeholder="Enter your password (8+ chars with !@#$%^&*)"
-                type="password"
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-              />
-              {!isLogin && form.password && (
+              <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                <input
+                  style={{ ...s.input, paddingRight: "40px", flex: 1 }}
+                  placeholder="Min 8 chars + special char"
+                  type={showPassword ? "text" : "password"}
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{ position: "absolute", right: "10px", background: "transparent", border: "none", fontSize: "18px", cursor: "pointer", padding: "4px 8px" }}
+                >
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                </button>
+              </div>
+              {form.password && (
                 <div style={{ fontSize: "12px", marginTop: "4px", color: validatePassword(form.password).valid ? "#25D366" : "#e53935" }}>
                   {validatePassword(form.password).valid ? "✓ Strong password" : validatePassword(form.password).message}
                 </div>
@@ -132,27 +143,27 @@ export default function AuthPage() {
 }
 
 const s: Record<string, React.CSSProperties> = {
-  page: { display: "flex", height: "100vh", fontFamily: "'Segoe UI', system-ui, sans-serif" },
-  left: { flex: 1, background: "#111", display: "flex", flexDirection: "column", justifyContent: "center", padding: "60px", gap: "40px" },
+  page: { display: "flex", height: "100vh", fontFamily: "'Segoe UI', system-ui, sans-serif", background: "#fff" },
+  left: { flex: 1, background: "#25D366", display: "flex", flexDirection: "column", justifyContent: "center", padding: "60px", gap: "40px" },
   brand: { display: "flex", flexDirection: "column", gap: "8px" },
   brandIcon: { fontSize: "40px", marginBottom: "4px" },
   brandName: { fontSize: "36px", fontWeight: "700", color: "#fff", margin: 0 },
-  brandTagline: { color: "#666", fontSize: "15px", margin: 0 },
+  brandTagline: { color: "rgba(255,255,255,0.8)", fontSize: "15px", margin: 0 },
   features: { display: "flex", flexDirection: "column", gap: "16px" },
   featureItem: { display: "flex", alignItems: "center", gap: "12px" },
-  featureDot: { width: "8px", height: "8px", borderRadius: "50%", background: "#25D366", flexShrink: 0 },
-  featureText: { color: "#888", fontSize: "14px" },
-  right: { width: "460px", background: "#fafafa", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px" },
+  featureDot: { width: "8px", height: "8px", borderRadius: "50%", background: "#fff", flexShrink: 0 },
+  featureText: { color: "rgba(255,255,255,0.8)", fontSize: "14px" },
+  right: { width: "460px", background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px" },
   card: { background: "#fff", borderRadius: "20px", padding: "40px", width: "100%", border: "1px solid #ebebeb" },
   cardTitle: { fontSize: "24px", fontWeight: "700", color: "#111", margin: "0 0 4px 0" },
   cardSub: { color: "#999", fontSize: "14px", margin: "0 0 28px 0" },
   tabs: { display: "flex", background: "#f5f5f5", borderRadius: "10px", padding: "4px", marginBottom: "28px", gap: "4px" },
   tab: { flex: 1, padding: "9px", border: "none", background: "transparent", borderRadius: "8px", cursor: "pointer", fontWeight: "600", fontSize: "13px", color: "#999", transition: "all 0.2s" },
-  tabActive: { background: "#fff", color: "#111", boxShadow: "0 1px 4px rgba(0,0,0,0.08)" },
+  tabActive: { background: "#fff", color: "#25D366", boxShadow: "0 1px 4px rgba(0,0,0,0.08)" },
   form: { display: "flex", flexDirection: "column", gap: "16px" },
   inputGroup: { display: "flex", flexDirection: "column", gap: "6px" },
   label: { fontSize: "12px", fontWeight: "600", color: "#555", textTransform: "uppercase", letterSpacing: "0.5px" },
-  input: { padding: "12px 14px", borderRadius: "10px", border: "1px solid #e5e5e5", fontSize: "14px", outline: "none", background: "#fafafa", color: "#111" },
+  input: { padding: "12px 14px", borderRadius: "10px", border: "1px solid #e5e5e5", fontSize: "14px", outline: "none", background: "#fafafa", color: "#111", width: "100%", boxSizing: "border-box" },
   error: { background: "#fff0f0", color: "#e53935", fontSize: "13px", padding: "10px 14px", borderRadius: "8px", border: "1px solid #ffd0d0" },
-  btn: { padding: "13px", background: "#111", color: "#fff", border: "none", borderRadius: "10px", fontSize: "15px", fontWeight: "600", cursor: "pointer", marginTop: "4px" },
+  btn: { padding: "13px", background: "#25D366", color: "#fff", border: "none", borderRadius: "10px", fontSize: "15px", fontWeight: "600", cursor: "pointer", marginTop: "4px" },
 };

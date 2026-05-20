@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import socket from "../socket";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../supabase";
+import VideoCallModal from "./VideoCallModal";
 
 const API_URL = "/api";
 
@@ -76,6 +77,9 @@ export default function ChatPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [sendingImage, setSendingImage] = useState(false);
   const [deleteMenu, setDeleteMenu] = useState<{ msg: Message; x: number; y: number } | null>(null);
+  const [inCall, setInCall] = useState(false);
+  const [callType, setCallType] = useState<"audio" | "video" | null>(null);
+  const [incomingCall, setIncomingCall] = useState<{ from: string; to: string; callType: "audio" | "video"; conversationId: string } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -94,7 +98,17 @@ export default function ChatPage() {
       socket.emit("user_online", user.id);
     }
     socket.on("online_users", (users: string[]) => setOnlineUsers(users));
-    return () => { socket.off("online_users"); };
+    socket.on("incoming_call", (data: any) => setIncomingCall(data));
+    socket.on("call_accepted", (data: any) => { setInCall(true); setCallType(data.callType); setIncomingCall(null); });
+    socket.on("call_declined", () => setIncomingCall(null));
+    socket.on("call_ended", () => { setInCall(false); setCallType(null); });
+    return () => {
+      socket.off("online_users");
+      socket.off("incoming_call");
+      socket.off("call_accepted");
+      socket.off("call_declined");
+      socket.off("call_ended");
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -338,6 +352,40 @@ export default function ChatPage() {
     } catch { alert("Failed to delete message"); }
   };
 
+  const initiateCall = (type: "audio" | "video") => {
+    if (!selectedConv) return;
+    socket.emit("initiate_call", {
+      from: String(user?.id),
+      to: String(selectedConv.other_user_id),
+      callType: type,
+      conversationId: String(selectedConv.id),
+    });
+    setCallType(type);
+    setInCall(true);
+  };
+
+  const acceptCall = () => {
+    if (incomingCall) {
+      socket.emit("accept_call", { from: incomingCall.from, to: incomingCall.to, callType: incomingCall.callType });
+      setInCall(true);
+      setCallType(incomingCall.callType);
+      setIncomingCall(null);
+    }
+  };
+
+  const declineCall = () => {
+    if (incomingCall) {
+      socket.emit("decline_call", { from: incomingCall.from, to: incomingCall.to });
+      setIncomingCall(null);
+    }
+  };
+
+  const endCall = () => {
+    socket.emit("end_call", { conversationId: String(selectedConv?.id) });
+    setInCall(false);
+    setCallType(null);
+  };
+
   const handleAudioPlay = (e: React.SyntheticEvent<HTMLAudioElement>) => {
     if (currentAudioRef.current && currentAudioRef.current !== e.target) {
       currentAudioRef.current.pause();
@@ -448,8 +496,33 @@ export default function ChatPage() {
     );
   };
 
+  if (inCall && callType) {
+    return (
+      <VideoCallModal
+        callType={callType}
+        receiverName={selectedConv?.other_username || "User"}
+        onEndCall={endCall}
+        darkMode={dark}
+        conversationId={selectedConv?.id}
+        userId={user?.id}
+        userName={user?.username}
+      />
+    );
+  }
+
   return (
     <div style={{ ...s.app, background: t.pageBg }}>
+      {incomingCall && (
+        <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%,-50%)", background: dark ? "#1a1f3a" : "#fff", border: `2px solid ${t.border}`, borderRadius: "12px", padding: "24px", zIndex: 9999, textAlign: "center", minWidth: "320px", boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
+          <h2 style={{ color: t.text, margin: "0 0 16px 0" }}>Incoming Call</h2>
+          <p style={{ color: t.text, fontSize: "16px", margin: "0 0 8px 0" }}>Someone is calling...</p>
+          <p style={{ color: "#999", fontSize: "12px", margin: "0 0 20px 0" }}>{incomingCall.callType === "video" ? "📹 Video Call" : "☎️ Voice Call"}</p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+            <button onClick={acceptCall} style={{ padding: "10px 24px", background: "#25D366", color: "#fff", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "600" }}>✓ Accept</button>
+            <button onClick={declineCall} style={{ padding: "10px 24px", background: "#e53935", color: "#fff", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "600" }}>✕ Decline</button>
+          </div>
+        </div>
+      )}
       <div style={{ ...s.sidebar, background: t.sidebarBg, borderRight: `1px solid ${t.border}` }}>
         <div style={{ ...s.profileRow, borderBottom: `1px solid ${t.border}` }}>
           <div style={{ ...s.avatar, background: getColor(user?.username) }}>{getInitials(user?.username)}</div>
@@ -541,6 +614,16 @@ export default function ChatPage() {
                   {isOnline(selectedConv.other_user_id, onlineUsers) ? "● Online" : "● Offline"}
                 </div>
               </div>
+              <button
+                onClick={() => initiateCall("audio")}
+                style={{ width: "36px", height: "36px", borderRadius: "50%", background: isOnline(selectedConv.other_user_id, onlineUsers) ? "#25D366" : "#ccc", color: "#fff", border: "none", fontSize: "18px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                title="Voice Call"
+              >☎️</button>
+              <button
+                onClick={() => initiateCall("video")}
+                style={{ width: "36px", height: "36px", borderRadius: "50%", background: isOnline(selectedConv.other_user_id, onlineUsers) ? "#25D366" : "#ccc", color: "#fff", border: "none", fontSize: "18px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                title="Video Call"
+              >📹</button>
               <button
                 style={{ background: "transparent", border: "none", fontSize: "20px", cursor: "pointer", padding: "4px", color: t.mutedText }}
                 onClick={() => setShowWallpaperPicker(!showWallpaperPicker)}

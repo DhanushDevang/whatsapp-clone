@@ -69,6 +69,22 @@ io.on("connection", (socket) => {
     socket.to(`conversation_${data.conversationId}`).emit("delete_message_all", data);
   });
 
+  socket.on("initiate_call", (data: { from: string; to: string; callType: string; conversationId: string }) => {
+    io.to(`conversation_${data.conversationId}`).emit("incoming_call", data);
+  });
+
+  socket.on("accept_call", (data: { from: string; to: string; callType: string }) => {
+    io.emit("call_accepted", data);
+  });
+
+  socket.on("decline_call", (data: { from: string; to: string }) => {
+    io.emit("call_declined", data);
+  });
+
+  socket.on("end_call", (data: { conversationId: string }) => {
+    io.to(`conversation_${data.conversationId}`).emit("call_ended", data);
+  });
+
   socket.on("disconnect", () => {
     for (const [userId, sid] of onlineUsers.entries()) {
       if (sid === socket.id) {
