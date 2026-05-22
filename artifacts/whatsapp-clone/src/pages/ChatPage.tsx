@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import socket from "../socket";
 import { useAuth } from "../context/AuthContext";
-import { supabase } from "../supabase";
 import VideoCallModal from "./VideoCallModal";
 
 const API_URL = "/api";
@@ -36,12 +35,16 @@ const WALLPAPERS = [
   { id: "pattern2", label: "Grid", value: "linear-gradient(#128C7E44 1px, transparent 1px), linear-gradient(90deg, #128C7E44 1px, transparent 1px)", size: "20px 20px", color: "#f0ece5" },
 ];
 
+interface ConversationParticipant {
+  id: number;
+  username: string;
+  email: string;
+}
+
 interface Conversation {
   id: number;
   created_at: string;
-  other_user_id: number;
-  other_username: string;
-  other_email: string;
+  participants: ConversationParticipant[];
 }
 
 interface Message {
@@ -201,10 +204,11 @@ export default function ChatPage() {
     const preview = imagePreview;
     setImagePreview(null);
     try {
+      const base64 = preview.includes(",") ? preview.split(",")[1] : preview;
       const res = await fetch(`${API_URL}/messages`, {
         method: "POST",
         headers: apiHeaders(),
-        body: JSON.stringify({ conversationId: selectedConv.id, content: "📷 Image", message_type: "image", media_data: preview }),
+        body: JSON.stringify({ conversationId: selectedConv.id, content: base64, message_type: "image" }),
       });
       if (res.ok) {
         const msg = await res.json();
@@ -250,43 +254,45 @@ export default function ChatPage() {
   const sendVoiceMessage = async (blob: Blob) => {
     if (!selectedConv) return;
     try {
-      const ext = blob.type.includes("mp4") ? "mp4" : blob.type.includes("ogg") ? "ogg" : "webm";
-      const fileName = `voice_${user?.id}_${Date.now()}.${ext}`;
-      const { error: uploadError } = await supabase.storage
-        .from("chat-images")
-        .upload(fileName, blob, { contentType: blob.type || "audio/webm", upsert: true });
-      if (uploadError) throw new Error(uploadError.message);
-      const { data: urlData } = supabase.storage.from("chat-images").getPublicUrl(fileName);
-      const voiceUrl = urlData.publicUrl;
-      const res = await fetch(`${API_URL}/messages`, {
-        method: "POST",
-        headers: apiHeaders(),
-        body: JSON.stringify({ conversationId: selectedConv.id, content: "🎤 Voice message", message_type: "voice", media_data: voiceUrl }),
-      });
-      if (res.ok) {
-        const msg = await res.json();
-        setMessages((prev) => [...prev, { ...msg, sender_username: user?.username }]);
-        socket.emit("send_message", { conversation_id: selectedConv.id, conversationId: selectedConv.id, message_type: "voice" });
-        setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
-      }
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const result = reader.result as string;
+        const base64Audio = result.includes(",") ? result.split(",")[1] : result;
+        if (!base64Audio) { alert("No audio recorded"); return; }
+        const res = await fetch(`${API_URL}/messages`, {
+          method: "POST",
+          headers: apiHeaders(),
+          body: JSON.stringify({ conversationId: selectedConv.id, content: base64Audio, message_type: "voice" }),
+        });
+        if (res.ok) {
+          const msg = await res.json();
+          setMessages((prev) => [...prev, { ...msg, sender_username: user?.username }]);
+          socket.emit("send_message", { conversation_id: selectedConv.id, conversationId: selectedConv.id, message_type: "voice" });
+          setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
+        }
+      };
+      reader.readAsDataURL(blob);
     } catch (err: any) { alert("Failed to send voice: " + err.message); }
   };
 
   const startNewChat = async () => {
     setError("");
+    if (!newEmail.trim()) { setError("Please enter an email"); return; }
     try {
-      const userRes = await fetch(`${API_URL}/auth/find?email=${encodeURIComponent(newEmail)}`, { headers: apiHeaders() });
-      const userData = await userRes.json();
-      if (!userRes.ok) throw new Error(userData.message || "User not found");
       const convRes = await fetch(`${API_URL}/conversations`, {
         method: "POST",
         headers: apiHeaders(),
-        body: JSON.stringify({ recipientId: userData.id }),
+        body: JSON.stringify({ participantEmail: newEmail.trim() }),
       });
-      if (!convRes.ok) { const d = await convRes.json(); throw new Error(d.message); }
+      const data = await convRes.json();
+      if (!convRes.ok) throw new Error(data.message);
       setShowNewChat(false);
       setNewEmail("");
-      fetchConversations();
+      setConversations((prev) => {
+        const exists = prev.find((c) => c.id === data.id);
+        return exists ? prev : [data, ...prev];
+      });
+      setSelectedConv(data);
     } catch (err: any) { setError(err.message || "User not found"); }
   };
 
@@ -356,7 +362,7 @@ export default function ChatPage() {
     if (!selectedConv) return;
     socket.emit("initiate_call", {
       from: String(user?.id),
-      to: String(selectedConv.other_user_id),
+      to: String(selectedConv.participants?.[0]?.id),
       callType: type,
       conversationId: String(selectedConv.id),
     });
@@ -428,7 +434,8 @@ export default function ChatPage() {
   };
 
   const filtered = conversations.filter((c) =>
-    c.other_username?.toLowerCase().includes(search.toLowerCase())
+    c.participants?.[0]?.username?.toLowerCase().includes(search.toLowerCase()) ||
+    c.participants?.[0]?.email?.toLowerCase().includes(search.toLowerCase())
   );
 
   const renderMessage = (msg: Message, i: number) => {
@@ -440,30 +447,32 @@ export default function ChatPage() {
       setDeleteMenu({ msg, x: e.clientX, y: e.clientY });
     };
 
+    const mediaSrc = msg.media_data || msg.content;
+
     return (
       <div key={i} style={{ display: "flex", justifyContent: isMe ? "flex-end" : "flex-start", marginBottom: "8px" }} onContextMenu={(e) => showDeleteMenu(e, msg)}>
-        {type === "image" && msg.media_data ? (
+        {type === "image" && mediaSrc ? (
           <div style={{ ...s.bubble, background: isMe ? t.bubbleMe : t.bubbleThem, border: isMe ? "none" : `1px solid ${t.border}`, borderBottomRightRadius: isMe ? "4px" : "14px", borderBottomLeftRadius: isMe ? "14px" : "4px", padding: "6px" }}>
             <img
-              src={getImageSrc(msg.media_data)}
+              src={getImageSrc(mediaSrc)}
               alt="shared"
               style={{ maxWidth: "240px", maxHeight: "240px", borderRadius: "8px", display: "block", cursor: "pointer" }}
-              onClick={() => window.open(getImageSrc(msg.media_data!), "_blank")}
+              onClick={() => window.open(getImageSrc(mediaSrc), "_blank")}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
             <span style={{ ...s.bubbleTime, color: t.mutedText }}>{formatTime(msg.created_at)}{isMe && " ✓✓"}</span>
           </div>
-        ) : type === "voice" && msg.media_data ? (
+        ) : type === "voice" && mediaSrc ? (
           <div style={{ ...s.voiceBubble, background: isMe ? t.bubbleMe : t.bubbleThem, border: isMe ? "none" : `1px solid ${t.border}`, flexDirection: "column", alignItems: "flex-start" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", width: "100%" }}>
               <audio
                 controls
-                src={msg.media_data?.startsWith("http") ? msg.media_data : getAudioSrc(msg.media_data)}
+                src={getAudioSrc(mediaSrc)}
                 style={{ height: "36px", outline: "none", maxWidth: "200px", borderRadius: "8px" }}
                 onPlay={handleAudioPlay}
               />
               <button
-                onClick={() => transcribeAudio(msg.id, msg.media_data?.startsWith("http") ? msg.media_data! : getAudioSrc(msg.media_data!))}
+                onClick={() => transcribeAudio(msg.id, getAudioSrc(mediaSrc))}
                 style={{ background: "#25D366", border: "none", borderRadius: "6px", color: "#fff", fontSize: "11px", padding: "4px 8px", cursor: "pointer", flexShrink: 0 }}
                 title="Convert to text"
               >
@@ -500,7 +509,7 @@ export default function ChatPage() {
     return (
       <VideoCallModal
         callType={callType}
-        receiverName={selectedConv?.other_username || "User"}
+        receiverName={selectedConv?.participants?.[0]?.username || "User"}
         onEndCall={endCall}
         darkMode={dark}
         conversationId={selectedConv?.id}
@@ -578,22 +587,25 @@ export default function ChatPage() {
               <p style={{ color: t.mutedText, fontSize: "12px", margin: 0 }}>Click ✎ to start chatting</p>
             </div>
           )}
-          {filtered.map((conv) => (
-            <div
-              key={conv.id}
-              style={{ ...s.convItem, borderBottom: `1px solid ${t.border}`, background: selectedConv?.id === conv.id ? t.activeConv : "transparent" }}
-              onClick={() => setSelectedConv(conv)}
-            >
-              <div style={{ ...s.avatar, background: getColor(conv.other_username) }}>{getInitials(conv.other_username)}</div>
-              <div style={s.convMeta}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <span style={{ ...s.convName, color: t.text }}>{conv.other_username}</span>
-                  <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: isOnline(conv.other_user_id, onlineUsers) ? "#4ade80" : "#aaa", display: "inline-block" }} />
+          {filtered.map((conv) => {
+            const peer = conv.participants?.[0];
+            return (
+              <div
+                key={conv.id}
+                style={{ ...s.convItem, borderBottom: `1px solid ${t.border}`, background: selectedConv?.id === conv.id ? t.activeConv : "transparent" }}
+                onClick={() => setSelectedConv(conv)}
+              >
+                <div style={{ ...s.avatar, background: getColor(peer?.username) }}>{getInitials(peer?.username)}</div>
+                <div style={s.convMeta}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ ...s.convName, color: t.text }}>{peer?.username}</span>
+                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: isOnline(peer?.id ?? 0, onlineUsers) ? "#4ade80" : "#aaa", display: "inline-block" }} />
+                  </div>
+                  <span style={{ color: t.mutedText, fontSize: "12px" }}>{peer?.email}</span>
                 </div>
-                <span style={{ color: t.mutedText, fontSize: "12px" }}>{conv.other_email}</span>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -607,23 +619,25 @@ export default function ChatPage() {
         ) : (
           <>
             <div style={{ ...s.chatHeader, background: t.sidebarBg, borderBottom: `1px solid ${t.border}` }}>
-              <div style={{ ...s.avatar, background: getColor(selectedConv.other_username) }}>{getInitials(selectedConv.other_username)}</div>
+              {(() => { const peer = selectedConv.participants?.[0]; const online = isOnline(peer?.id ?? 0, onlineUsers); return (<>
+              <div style={{ ...s.avatar, background: getColor(peer?.username) }}>{getInitials(peer?.username)}</div>
               <div style={{ flex: 1 }}>
-                <div style={{ ...s.chatName, color: t.text }}>{selectedConv.other_username}</div>
-                <div style={{ fontSize: "12px", color: isOnline(selectedConv.other_user_id, onlineUsers) ? "#4ade80" : "#aaa" }}>
-                  {isOnline(selectedConv.other_user_id, onlineUsers) ? "● Online" : "● Offline"}
+                <div style={{ ...s.chatName, color: t.text }}>{peer?.username}</div>
+                <div style={{ fontSize: "12px", color: online ? "#4ade80" : "#aaa" }}>
+                  {online ? "● Online" : "● Offline"}
                 </div>
               </div>
               <button
                 onClick={() => initiateCall("audio")}
-                style={{ width: "36px", height: "36px", borderRadius: "50%", background: isOnline(selectedConv.other_user_id, onlineUsers) ? "#25D366" : "#ccc", color: "#fff", border: "none", fontSize: "18px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                style={{ width: "36px", height: "36px", borderRadius: "50%", background: online ? "#25D366" : "#ccc", color: "#fff", border: "none", fontSize: "18px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
                 title="Voice Call"
               >☎️</button>
               <button
                 onClick={() => initiateCall("video")}
-                style={{ width: "36px", height: "36px", borderRadius: "50%", background: isOnline(selectedConv.other_user_id, onlineUsers) ? "#25D366" : "#ccc", color: "#fff", border: "none", fontSize: "18px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                style={{ width: "36px", height: "36px", borderRadius: "50%", background: online ? "#25D366" : "#ccc", color: "#fff", border: "none", fontSize: "18px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
                 title="Video Call"
               >📹</button>
+              </>); })()}
               <button
                 style={{ background: "transparent", border: "none", fontSize: "20px", cursor: "pointer", padding: "4px", color: t.mutedText }}
                 onClick={() => setShowWallpaperPicker(!showWallpaperPicker)}
