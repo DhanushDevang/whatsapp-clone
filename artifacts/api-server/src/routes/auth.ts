@@ -3,10 +3,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "@workspace/db";
 import { protect } from "../middleware/auth";
+import { JWT_SECRET } from "../config";
 
 const router = Router();
-
-const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_change_in_production";
 
 router.post("/register", async (req: Request, res: Response): Promise<void> => {
   try {

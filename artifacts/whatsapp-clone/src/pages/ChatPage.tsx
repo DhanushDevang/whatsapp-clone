@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import socket from "../socket";
+import socket, { reconnectWithToken } from "../socket";
 import { useAuth } from "../context/AuthContext";
 import VideoCallModal from "./VideoCallModal";
 
@@ -96,6 +96,7 @@ export default function ChatPage() {
   const apiHeaders = () => ({ Authorization: `Bearer ${token}`, "Content-Type": "application/json" });
 
   useEffect(() => {
+    if (token) reconnectWithToken(token);
     fetchConversations();
     if (user) {
       socket.emit("user_online", user.id);
