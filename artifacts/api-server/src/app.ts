@@ -69,6 +69,18 @@ app.use("/api", router);
 
 const onlineUsers = new Map<string, string>();
 
+async function isMember(userId: number, conversationId: string): Promise<boolean> {
+  try {
+    const result = await pool.query(
+      "SELECT 1 FROM conversation_participants WHERE conversation_id = $1 AND user_id = $2",
+      [conversationId, userId]
+    );
+    return result.rows.length > 0;
+  } catch {
+    return false;
+  }
+}
+
 io.on("connection", (socket) => {
   logger.info({ socketId: socket.id, userId: socket.data.userId }, "User connected");
 
@@ -78,44 +90,63 @@ io.on("connection", (socket) => {
   });
 
   socket.on("join_conversation", async (conversationId: string) => {
-    try {
-      const userId = socket.data.userId;
-      const result = await pool.query(
-        "SELECT 1 FROM conversation_participants WHERE conversation_id = $1 AND user_id = $2",
-        [conversationId, userId]
-      );
-      if (result.rows.length === 0) {
-        logger.warn({ userId, conversationId }, "Unauthorized join_conversation attempt");
-        return;
-      }
-      socket.join(`conversation_${conversationId}`);
-    } catch (err) {
-      logger.error({ err }, "join_conversation error");
+    const userId = socket.data.userId;
+    if (!(await isMember(userId, conversationId))) {
+      logger.warn({ userId, conversationId }, "Unauthorized join_conversation attempt");
+      return;
     }
+    socket.join(`conversation_${conversationId}`);
   });
 
-  socket.on("send_message", (data: { conversation_id: string; conversationId: string; message_type: string }) => {
+  socket.on("send_message", async (data: { conversation_id?: string; conversationId?: string; message_type?: string }) => {
     const convId = data.conversation_id || data.conversationId;
+    if (!convId) return;
+    const userId = socket.data.userId;
+    if (!(await isMember(userId, convId))) {
+      logger.warn({ userId, convId }, "Unauthorized send_message attempt");
+      return;
+    }
     socket.to(`conversation_${convId}`).emit("receive_message", data);
   });
 
-  socket.on("delete_message_all", (data: { messageId: string; conversationId: string }) => {
+  socket.on("delete_message_all", async (data: { messageId: string; conversationId: string }) => {
+    const userId = socket.data.userId;
+    if (!(await isMember(userId, data.conversationId))) {
+      logger.warn({ userId, conversationId: data.conversationId }, "Unauthorized delete_message_all attempt");
+      return;
+    }
     socket.to(`conversation_${data.conversationId}`).emit("delete_message_all", data);
   });
 
-  socket.on("initiate_call", (data: { from: string; to: string; callType: string; conversationId: string }) => {
+  socket.on("initiate_call", async (data: { from: string; to: string; callType: string; conversationId: string }) => {
+    const userId = socket.data.userId;
+    if (!(await isMember(userId, data.conversationId))) {
+      logger.warn({ userId, conversationId: data.conversationId }, "Unauthorized initiate_call attempt");
+      return;
+    }
     io.to(`conversation_${data.conversationId}`).emit("incoming_call", data);
   });
 
   socket.on("accept_call", (data: { from: string; to: string; callType: string }) => {
-    io.emit("call_accepted", data);
+    const toSocketId = onlineUsers.get(String(data.to));
+    if (toSocketId) {
+      io.to(toSocketId).emit("call_accepted", data);
+    }
   });
 
   socket.on("decline_call", (data: { from: string; to: string }) => {
-    io.emit("call_declined", data);
+    const toSocketId = onlineUsers.get(String(data.to));
+    if (toSocketId) {
+      io.to(toSocketId).emit("call_declined", data);
+    }
   });
 
-  socket.on("end_call", (data: { conversationId: string }) => {
+  socket.on("end_call", async (data: { conversationId: string }) => {
+    const userId = socket.data.userId;
+    if (!(await isMember(userId, data.conversationId))) {
+      logger.warn({ userId, conversationId: data.conversationId }, "Unauthorized end_call attempt");
+      return;
+    }
     io.to(`conversation_${data.conversationId}`).emit("call_ended", data);
   });
 
