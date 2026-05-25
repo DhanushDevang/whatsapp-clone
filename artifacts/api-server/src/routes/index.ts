@@ -3,6 +3,7 @@ import healthRouter from "./health";
 import authRouter from "./auth";
 import conversationsRouter from "./conversations";
 import messagesRouter from "./messages";
+import livekitRouter from "./livekit";
 
 const router: IRouter = Router();
 
@@ -10,5 +11,6 @@ router.use(healthRouter);
 router.use("/auth", authRouter);
 router.use("/conversations", conversationsRouter);
 router.use("/messages", messagesRouter);
+router.use("/livekit", livekitRouter);
 
 export default router;

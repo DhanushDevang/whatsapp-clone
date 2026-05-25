@@ -83,6 +83,7 @@ export default function ChatPage() {
   const [inCall, setInCall] = useState(false);
   const [callType, setCallType] = useState<"audio" | "video" | null>(null);
   const [incomingCall, setIncomingCall] = useState<{ from: string; to: string; callType: "audio" | "video"; conversationId: string } | null>(null);
+  const [livekitToken, setLivekitToken] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -359,8 +360,26 @@ export default function ChatPage() {
     } catch { alert("Failed to delete message"); }
   };
 
-  const initiateCall = (type: "audio" | "video") => {
+  const fetchLivekitToken = async (roomName: string): Promise<string | null> => {
+    try {
+      const res = await fetch(`${API_URL}/livekit/token`, {
+        method: "POST",
+        headers: apiHeaders(),
+        body: JSON.stringify({ roomName, participantName: user?.username }),
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.token as string;
+    } catch {
+      return null;
+    }
+  };
+
+  const initiateCall = async (type: "audio" | "video") => {
     if (!selectedConv) return;
+    const roomName = `conv-${selectedConv.id}`;
+    const lkToken = await fetchLivekitToken(roomName);
+    setLivekitToken(lkToken);
     socket.emit("initiate_call", {
       from: String(user?.id),
       to: String(selectedConv.participants?.[0]?.id),
@@ -371,8 +390,11 @@ export default function ChatPage() {
     setInCall(true);
   };
 
-  const acceptCall = () => {
+  const acceptCall = async () => {
     if (incomingCall) {
+      const roomName = `conv-${incomingCall.conversationId}`;
+      const lkToken = await fetchLivekitToken(roomName);
+      setLivekitToken(lkToken);
       socket.emit("accept_call", { from: incomingCall.from, to: incomingCall.to, callType: incomingCall.callType });
       setInCall(true);
       setCallType(incomingCall.callType);
@@ -512,10 +534,7 @@ export default function ChatPage() {
         callType={callType}
         receiverName={selectedConv?.participants?.[0]?.username || "User"}
         onEndCall={endCall}
-        darkMode={dark}
-        conversationId={selectedConv?.id}
-        userId={user?.id}
-        userName={user?.username}
+        livekitToken={livekitToken}
       />
     );
   }
