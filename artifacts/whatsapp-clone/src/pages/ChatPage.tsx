@@ -106,7 +106,7 @@ export default function ChatPage() {
     socket.on("incoming_call", (data: any) => setIncomingCall(data));
     socket.on("call_accepted", (data: any) => { setInCall(true); setCallType(data.callType); setIncomingCall(null); });
     socket.on("call_declined", () => setIncomingCall(null));
-    socket.on("call_ended", () => { setInCall(false); setCallType(null); });
+    socket.on("call_ended", () => { setInCall(false); setCallType(null); setLivekitToken(null); setIncomingCall(null); });
     return () => {
       socket.off("online_users");
       socket.off("incoming_call");

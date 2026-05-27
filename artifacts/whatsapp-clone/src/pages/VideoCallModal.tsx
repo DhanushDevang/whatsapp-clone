@@ -34,8 +34,12 @@ export default function VideoCallModal({ callType, receiverName, onEndCall, live
         if (track.kind === Track.Kind.Video && remoteVideoRef.current) {
           track.attach(remoteVideoRef.current);
         }
-        if (track.kind === Track.Kind.Audio && remoteAudioRef.current) {
-          track.attach(remoteAudioRef.current);
+        if (track.kind === Track.Kind.Audio) {
+          const audioEl = document.createElement("audio");
+          audioEl.autoplay = true;
+          audioEl.playsInline = true;
+          document.body.appendChild(audioEl);
+          track.attach(audioEl);
         }
       });
 
