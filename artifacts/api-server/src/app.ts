@@ -1,5 +1,7 @@
 import express, { type Express } from "express";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import pinoHttp from "pino-http";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -11,6 +13,15 @@ import { pool } from "@workspace/db";
 
 const app: Express = express();
 const httpServer = createServer(app);
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message: "Too many requests, please try again later.",
+});
+
+app.use(helmet());
+app.use(limiter);
 
 export const io = new Server(httpServer, {
   path: "/api/socket.io",
