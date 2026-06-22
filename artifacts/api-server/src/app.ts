@@ -15,10 +15,24 @@ const app: Express = express();
 const httpServer = createServer(app);
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
   message: "Too many requests, please try again later.",
 });
+
+const corsWhitelist = ["replit.dev", "localhost", "vercel.app"];
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (!origin || corsWhitelist.some((d) => origin.includes(d))) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
 app.use(helmet());
 app.use(limiter);
@@ -26,7 +40,14 @@ app.use(limiter);
 export const io = new Server(httpServer, {
   path: "/api/socket.io",
   cors: {
-    origin: "*",
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      if (!origin || corsWhitelist.some((d) => origin.includes(d))) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
     methods: ["GET", "POST"],
   },
   transports: ["websocket", "polling"],
@@ -72,7 +93,7 @@ app.use(
     },
   }),
 );
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
