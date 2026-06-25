@@ -38,3 +38,4 @@ externalPort = 3000
 [userenv]
 
 [userenv.shared]
+ALLOWED_ORIGINS = "https://whatsapp-clone-git-main-r-dhanush.vercel.app,http://localhost:3000"
