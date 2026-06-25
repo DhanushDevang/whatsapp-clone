@@ -20,10 +20,12 @@ const limiter = rateLimit({
   message: "Too many requests, please try again later.",
 });
 
-const corsWhitelist = ["replit.dev", "localhost", "vercel.app"];
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || "replit.dev,localhost,vercel.app")
+  .split(",")
+  .map((o) => o.trim());
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    if (!origin || corsWhitelist.some((d) => origin.includes(d))) {
+    if (!origin || allowedOrigins.some((d) => origin.includes(d))) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
