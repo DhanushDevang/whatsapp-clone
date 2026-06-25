@@ -14,10 +14,16 @@ import { pool } from "@workspace/db";
 const app: Express = express();
 const httpServer = createServer(app);
 
-const limiter = rateLimit({
+const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
   message: "Too many requests, please try again later.",
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: "Too many login attempts. Please try again in 15 minutes.",
 });
 
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || "replit.dev,localhost,vercel.app")
@@ -37,13 +43,15 @@ const corsOptions = {
 };
 
 app.use(helmet());
-app.use(limiter);
+app.use(generalLimiter);
+app.use("/api/auth/register", authLimiter);
+app.use("/api/auth/login", authLimiter);
 
 export const io = new Server(httpServer, {
   path: "/api/socket.io",
   cors: {
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      if (!origin || corsWhitelist.some((d) => origin.includes(d))) {
+      if (!origin || allowedOrigins.some((d) => origin.includes(d))) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
