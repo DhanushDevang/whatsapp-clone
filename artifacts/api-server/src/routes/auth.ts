@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs"import jwt from "jsonwebtoken";
 import { pool } from "@workspace/db";
 import { protect } from "../middleware/auth";
 import { JWT_SECRET } from "../config";
@@ -41,17 +40,29 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
     }
     const result = await pool.query("SELECT * FROM users WHERE LOWER(email) = LOWER($1)", [email]);
     if (result.rows.length === 0) {
-      res.status(400).json({ message: "Invalid credentials" });
-      return;
-    }
+  await pool.query(
+    "INSERT INTO login_logs (email, ip_address, status) VALUES ($1, $2, 'failed')",
+    [email, req.ip]
+  );
+  res.status(400).json({ message: "Invalid credentials" });
+  return;
+}
     const user = result.rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(400).json({ message: "Invalid credentials" });
-      return;
-    }
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
-    res.json({ user: { id: user.id, username: user.username, email: user.email }, token });
+  await pool.query(
+    "INSERT INTO login_logs (user_id, email, ip_address, status) VALUES ($1, $2, $3, 'failed')",
+    [user.id, email, req.ip]
+  );
+  res.status(400).json({ message: "Invalid credentials" });
+  return;
+}
+await pool.query(
+  "INSERT INTO login_logs (user_id, email, ip_address, status) VALUES ($1, $2, $3, 'success')",
+  [user.id, email, req.ip]
+);
+const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
+res.json({ user: { id: user.id, username: user.username, email: user.email }, token });
   } catch (err: any) {
     res.status(500).json({ message: err.message });
   }
