@@ -228,3 +228,5 @@ io.on("connection", (socket) => {
 });
 
 export default httpServer;
+export { app };
+
