@@ -45,11 +45,34 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
       return;
     }
     const user = result.rows[0];
+
+    // 1) Check account lock
+    if (user.locked_until && new Date(user.locked_until) > new Date()) {
+      res.status(423).json({ message: "Account locked. Too many failed attempts. Try again in 15 minutes." });
+      return;
+    }
+
+    // 2) Verify password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      // 3) Wrong password: increment failed_attempts
+      const failed = (user.failed_attempts || 0) + 1;
+      if (failed >= 5) {
+        const lockedUntil = new Date(Date.now() + 15 * 60 * 1000);
+        await pool.query("UPDATE users SET failed_attempts = $1, locked_until = $2 WHERE id = $3", [failed, lockedUntil, user.id]);
+        res.status(423).json({ message: "Account locked. Too many failed attempts. Try again in 15 minutes." });
+        return;
+      }
+      await pool.query("UPDATE users SET failed_attempts = $1 WHERE id = $2", [failed, user.id]);
       res.status(400).json({ message: "Invalid credentials" });
       return;
     }
+
+    // 4) Correct password: reset failed_attempts
+    if (user.failed_attempts > 0 || user.locked_until) {
+      await pool.query("UPDATE users SET failed_attempts = 0, locked_until = NULL WHERE id = $1", [user.id]);
+    }
+
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
     res.json({ user: { id: user.id, username: user.username, email: user.email }, token });
   } catch (err: any) {
