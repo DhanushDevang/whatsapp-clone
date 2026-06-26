@@ -14,7 +14,7 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: "All fields are required" });
       return;
     }
-    const existing = await pool.query("SELECT id FROM users WHERE email = $1", [email]);
+    const existing = await pool.query("SELECT id FROM users WHERE LOWER(email) = LOWER($1)", [email]);
     if (existing.rows.length > 0) {
       res.status(400).json({ message: "User already exists" });
       return;
@@ -39,7 +39,7 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: "Email and password required" });
       return;
     }
-    const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+    const result = await pool.query("SELECT * FROM users WHERE LOWER(email) = LOWER($1)", [email]);
     if (result.rows.length === 0) {
       res.status(400).json({ message: "Invalid credentials" });
       return;

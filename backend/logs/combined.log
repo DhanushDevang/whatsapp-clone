@@ -1,0 +1,402 @@
+{"level":"info","message":"Test log message","timestamp":"2026-04-10 11:16:09"}
+{"level":"warn","message":"Test warning","timestamp":"2026-04-10 11:16:09"}
+{"level":"error","message":"Test error","timestamp":"2026-04-10 11:16:09"}
+{"action":"login","level":"info","message":"User action","timestamp":"2026-04-10 11:16:09","userId":1}
+{"email":"test_1775799969210@jest.com","level":"info","message":"User registered","timestamp":"2026-04-10 11:16:09","userId":22}
+{"email":"msg1_1775799969332@jest.com","level":"info","message":"User registered","timestamp":"2026-04-10 11:16:09","userId":23}
+{"email":"msg2_1775799969332@jest.com","level":"info","message":"User registered","timestamp":"2026-04-10 11:16:09","userId":24}
+{"email":"test_1775799969210@jest.com","level":"info","message":"User logged in","timestamp":"2026-04-10 11:16:09","userId":22}
+{"conversationId":10,"duration":"3ms","level":"info","message":"Message sent","messageId":54,"senderId":23,"timestamp":"2026-04-10 11:16:09","type":"text"}
+{"conversationId":10,"duration":"1ms","level":"info","message":"Message sent","messageId":55,"senderId":23,"timestamp":"2026-04-10 11:16:09","type":"text"}
+{"conversationId":10,"duration":"1ms","level":"info","message":"Message sent","messageId":56,"senderId":23,"timestamp":"2026-04-10 11:16:09","type":"text"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-04-10 11:16:49"}
+{"level":"info","message":"GET /health 200 3.266 ms - 208","timestamp":"2026-04-10 11:17:11"}
+{"duration":"6ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-04-10 11:17:11","url":"/health"}
+{"level":"info","message":"GET /metrics 200 4.228 ms - -","timestamp":"2026-04-10 11:17:19"}
+{"duration":"4ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-04-10 11:17:19","url":"/metrics"}
+{"email":"test_1775800083191@jest.com","level":"info","message":"User registered","timestamp":"2026-04-10 11:18:03","userId":25}
+{"email":"test_1775800083191@jest.com","level":"info","message":"User logged in","timestamp":"2026-04-10 11:18:03","userId":25}
+{"email":"msg1_1775800083624@jest.com","level":"info","message":"User registered","timestamp":"2026-04-10 11:18:03","userId":26}
+{"email":"msg2_1775800083624@jest.com","level":"info","message":"User registered","timestamp":"2026-04-10 11:18:03","userId":27}
+{"conversationId":11,"duration":"3ms","level":"info","message":"Message sent","messageId":57,"senderId":26,"timestamp":"2026-04-10 11:18:03","type":"text"}
+{"conversationId":11,"duration":"2ms","level":"info","message":"Message sent","messageId":58,"senderId":26,"timestamp":"2026-04-10 11:18:03","type":"text"}
+{"conversationId":11,"duration":"2ms","level":"info","message":"Message sent","messageId":59,"senderId":26,"timestamp":"2026-04-10 11:18:03","type":"text"}
+{"level":"info","message":"Test log message","timestamp":"2026-04-10 11:18:04"}
+{"level":"warn","message":"Test warning","timestamp":"2026-04-10 11:18:04"}
+{"level":"error","message":"Test error","timestamp":"2026-04-10 11:18:04"}
+{"action":"login","level":"info","message":"User action","timestamp":"2026-04-10 11:18:04","userId":1}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-04-10 12:13:47"}
+{"level":"info","message":"User connected","socketId":"ZcLxqg7GS2zmSDjFAAAB","timestamp":"2026-04-10 12:14:06"}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:14:06","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:14:06","userId":2}
+{"level":"info","message":"GET /api/conversations 304 36.944 ms - -","timestamp":"2026-04-10 12:14:06"}
+{"duration":"38ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:14:06","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 3.766 ms - -","timestamp":"2026-04-10 12:14:06"}
+{"duration":"4ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:14:06","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-04-10 12:16:40","userId":2}
+{"level":"info","message":"User disconnected","socketId":"ZcLxqg7GS2zmSDjFAAAB","timestamp":"2026-04-10 12:16:40"}
+{"level":"info","message":"User connected","socketId":"iOt0lHCxrFdQAf48AAAD","timestamp":"2026-04-10 12:16:41"}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:16:41","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:16:41","userId":2}
+{"level":"info","message":"GET /api/conversations 304 54.556 ms - -","timestamp":"2026-04-10 12:16:41"}
+{"duration":"55ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:16:41","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 1.515 ms - -","timestamp":"2026-04-10 12:16:41"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:16:41","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-04-10 12:17:38","userId":2}
+{"level":"info","message":"User disconnected","socketId":"iOt0lHCxrFdQAf48AAAD","timestamp":"2026-04-10 12:17:38"}
+{"level":"info","message":"User connected","socketId":"p5qlrQuotbKXReN1AAAF","timestamp":"2026-04-10 12:17:38"}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:17:38","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:17:38","userId":2}
+{"level":"info","message":"GET /api/conversations 304 43.528 ms - -","timestamp":"2026-04-10 12:17:39"}
+{"duration":"44ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:17:39","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 1.579 ms - -","timestamp":"2026-04-10 12:17:39"}
+{"duration":"1ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:17:39","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-04-10 12:17:39","userId":2}
+{"level":"info","message":"User disconnected","socketId":"p5qlrQuotbKXReN1AAAF","timestamp":"2026-04-10 12:17:39"}
+{"level":"info","message":"User connected","socketId":"BnZlVmqvWuebG5I-AAAH","timestamp":"2026-04-10 12:17:39"}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:17:39","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:17:39","userId":2}
+{"level":"info","message":"GET /api/conversations 304 14.479 ms - -","timestamp":"2026-04-10 12:17:39"}
+{"duration":"15ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:17:39","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 2.696 ms - -","timestamp":"2026-04-10 12:17:39"}
+{"duration":"3ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:17:39","url":"/api/conversations"}
+{"level":"info","message":"User online","timestamp":"2026-04-10 12:18:46","userId":2}
+{"level":"info","message":"GET /api/conversations 304 29.785 ms - -","timestamp":"2026-04-10 12:18:46"}
+{"duration":"31ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:18:46","url":"/api/conversations"}
+{"conversationId":3,"level":"info","message":"User joined conversation","socketId":"BnZlVmqvWuebG5I-AAAH","timestamp":"2026-04-10 12:18:54"}
+{"level":"info","message":"GET /api/messages/3 200 44.391 ms - 156","timestamp":"2026-04-10 12:18:54"}
+{"duration":"46ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-04-10 12:18:54","url":"/api/messages/3"}
+{"conversationId":1,"level":"info","message":"User joined conversation","socketId":"BnZlVmqvWuebG5I-AAAH","timestamp":"2026-04-10 12:18:56"}
+{"level":"info","message":"GET /api/messages/1 304 16.900 ms - -","timestamp":"2026-04-10 12:18:56"}
+{"duration":"17ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-10 12:18:56","url":"/api/messages/1"}
+{"level":"info","message":"User offline","timestamp":"2026-04-10 14:57:13","userId":2}
+{"level":"info","message":"User disconnected","socketId":"BnZlVmqvWuebG5I-AAAH","timestamp":"2026-04-10 14:57:13"}
+{"level":"info","message":"User connected","socketId":"07Gp-wK1RaO5VzgCAAAJ","timestamp":"2026-04-10 14:57:15"}
+{"level":"info","message":"User disconnected","socketId":"07Gp-wK1RaO5VzgCAAAJ","timestamp":"2026-04-12 11:37:11"}
+{"level":"info","message":"User connected","socketId":"O3mriIZ6e0Ie0Rz7AAAL","timestamp":"2026-04-12 11:37:12"}
+{"level":"info","message":"User disconnected","socketId":"O3mriIZ6e0Ie0Rz7AAAL","timestamp":"2026-04-12 13:49:02"}
+{"level":"info","message":"User connected","socketId":"FMs97kXzA88j6SaAAAAN","timestamp":"2026-04-12 13:49:03"}
+{"level":"info","message":"User online","timestamp":"2026-04-12 21:00:01","userId":2}
+{"level":"info","message":"GET /api/conversations 401 7.603 ms - 32","timestamp":"2026-04-12 21:00:01"}
+{"duration":"8ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":401,"timestamp":"2026-04-12 21:00:01","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-04-12 21:00:10","userId":2}
+{"level":"info","message":"User disconnected","socketId":"FMs97kXzA88j6SaAAAAN","timestamp":"2026-04-12 21:00:10"}
+{"level":"info","message":"User connected","socketId":"6wPf4CupeY4sc-QBAAAP","timestamp":"2026-04-12 21:00:10"}
+{"level":"info","message":"User online","timestamp":"2026-04-12 21:00:10","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-04-12 21:00:10","userId":2}
+{"level":"info","message":"GET /api/conversations 401 2.177 ms - 32","timestamp":"2026-04-12 21:00:10"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":401,"timestamp":"2026-04-12 21:00:10","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 401 0.944 ms - 32","timestamp":"2026-04-12 21:00:10"}
+{"duration":"1ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":401,"timestamp":"2026-04-12 21:00:10","url":"/api/conversations"}
+{"level":"info","message":"GET /api/auth/find?email=test 401 1.528 ms - 32","timestamp":"2026-04-12 21:00:29"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":401,"timestamp":"2026-04-12 21:00:29","url":"/api/auth/find?email=test"}
+{"email":"test@test.com","level":"info","message":"User logged in","timestamp":"2026-04-12 21:00:38","userId":1}
+{"level":"info","message":"POST /api/auth/login 200 189.565 ms - 211","timestamp":"2026-04-12 21:00:38"}
+{"duration":"190ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-04-12 21:00:38","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-04-12 21:00:38","userId":1}
+{"level":"info","message":"User online","timestamp":"2026-04-12 21:00:38","userId":1}
+{"level":"info","message":"GET /api/conversations 200 9.245 ms - 405","timestamp":"2026-04-12 21:00:38"}
+{"duration":"9ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-04-12 21:00:38","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 1.855 ms - -","timestamp":"2026-04-12 21:00:38"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-12 21:00:38","url":"/api/conversations"}
+{"conversationId":1,"level":"info","message":"User joined conversation","socketId":"6wPf4CupeY4sc-QBAAAP","timestamp":"2026-04-12 21:00:42"}
+{"level":"info","message":"GET /api/messages/1 304 22.183 ms - -","timestamp":"2026-04-12 21:00:42"}
+{"duration":"23ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-04-12 21:00:42","url":"/api/messages/1"}
+{"level":"info","message":"User offline","timestamp":"2026-04-12 21:12:59","userId":2}
+{"level":"info","message":"User disconnected","socketId":"6wPf4CupeY4sc-QBAAAP","timestamp":"2026-04-12 21:12:59"}
+{"level":"info","message":"User connected","socketId":"rD-rOYKonLSZNQumAAAR","timestamp":"2026-04-12 21:13:00"}
+{"level":"info","message":"User disconnected","socketId":"rD-rOYKonLSZNQumAAAR","timestamp":"2026-04-12 22:01:51"}
+{"level":"info","message":"User connected","socketId":"qC1h7iMPBEfSDpK3AAAT","timestamp":"2026-04-12 22:01:53"}
+{"level":"info","message":"User disconnected","socketId":"qC1h7iMPBEfSDpK3AAAT","timestamp":"2026-04-13 10:05:40"}
+{"level":"info","message":"User connected","socketId":"uUTATA22RrLvw57aAAAV","timestamp":"2026-04-13 10:05:41"}
+{"level":"info","message":"User disconnected","socketId":"uUTATA22RrLvw57aAAAV","timestamp":"2026-04-13 11:27:03"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-14 09:06:31"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-14 09:11:43"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-14 09:55:09"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-14 09:59:19"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-14 18:55:18"}
+{"level":"info","message":"User connected","socketId":"UyMjcMg0gQDXoQfQAAAB","timestamp":"2026-05-14 18:56:07"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 08:55:37"}
+{"level":"info","message":"User connected","socketId":"WTnaTbqCMnuCQwQCAAAB","timestamp":"2026-05-16 08:55:41"}
+{"level":"info","message":"User connected","socketId":"TByMaBvVUaclHFl3AAAD","timestamp":"2026-05-16 08:56:09"}
+{"level":"info","message":"User disconnected","socketId":"WTnaTbqCMnuCQwQCAAAB","timestamp":"2026-05-16 08:56:55"}
+{"level":"info","message":"User disconnected","socketId":"TByMaBvVUaclHFl3AAAD","timestamp":"2026-05-16 08:56:55"}
+{"level":"info","message":"User connected","socketId":"i9Pga5NPoBe7KhJMAAAG","timestamp":"2026-05-16 08:56:57"}
+{"level":"info","message":"User connected","socketId":"qI5MdmdglhZKe4eNAAAH","timestamp":"2026-05-16 08:56:57"}
+{"level":"info","message":"User disconnected","socketId":"qI5MdmdglhZKe4eNAAAH","timestamp":"2026-05-16 08:56:58"}
+{"level":"info","message":"User disconnected","socketId":"i9Pga5NPoBe7KhJMAAAG","timestamp":"2026-05-16 08:56:58"}
+{"level":"info","message":"User connected","socketId":"7UrskXzhcIC8OKceAAAJ","timestamp":"2026-05-16 08:56:58"}
+{"level":"info","message":"POST /api/auth/login 400 1771.279 ms - 33","timestamp":"2026-05-16 08:57:10"}
+{"duration":"1775ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 08:57:10","url":"/api/auth/login"}
+{"level":"info","message":"GET /api/auth/login 404 2.251 ms - 1111","timestamp":"2026-05-16 08:57:24"}
+{"duration":"3ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 08:57:24","url":"/api/auth/login"}
+{"level":"info","message":"GET /favicon.ico 404 0.989 ms - 1134","timestamp":"2026-05-16 08:57:24"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 08:57:24","url":"/favicon.ico"}
+{"level":"info","message":"POST /api/auth/login 400 1764.020 ms - 33","timestamp":"2026-05-16 08:57:53"}
+{"duration":"1765ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 08:57:53","url":"/api/auth/login"}
+{"email":"test3@test.com","level":"info","message":"User registered","timestamp":"2026-05-16 08:58:23","userId":1}
+{"level":"info","message":"POST /api/auth/register 201 2248.035 ms - 213","timestamp":"2026-05-16 08:58:23"}
+{"duration":"2249ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":201,"timestamp":"2026-05-16 08:58:23","url":"/api/auth/register"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 08:58:23","userId":1}
+{"level":"info","message":"User online","timestamp":"2026-05-16 08:58:23","userId":1}
+{"level":"info","message":"GET /api/conversations 200 303.070 ms - 2","timestamp":"2026-05-16 08:58:23"}
+{"duration":"304ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 08:58:23","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 224.754 ms - -","timestamp":"2026-05-16 08:58:24"}
+{"duration":"226ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 08:58:24","url":"/api/conversations"}
+{"level":"info","message":"GET /api/auth/find?email=test2@test.com 404 1698.795 ms - 28","timestamp":"2026-05-16 08:58:48"}
+{"duration":"1700ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 08:58:48","url":"/api/auth/find?email=test2@test.com"}
+{"level":"info","message":"GET /api/auth/find?email=kavangowda69@gmail.com 404 1889.473 ms - 28","timestamp":"2026-05-16 08:59:01"}
+{"duration":"1891ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 08:59:01","url":"/api/auth/find?email=kavangowda69@gmail.com"}
+{"level":"info","message":"GET /api/auth/find?email=dhanush26kkrtrd 404 228.038 ms - 28","timestamp":"2026-05-16 08:59:07"}
+{"duration":"229ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 08:59:07","url":"/api/auth/find?email=dhanush26kkrtrd"}
+{"level":"info","message":"GET /api/auth/find?email=dhanush26kkrtrd@gmail.com 404 223.517 ms - 28","timestamp":"2026-05-16 08:59:12"}
+{"duration":"225ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 08:59:12","url":"/api/auth/find?email=dhanush26kkrtrd@gmail.com"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 09:27:39"}
+{"level":"info","message":"GET / 200 2.652 ms - 48","timestamp":"2026-05-16 09:29:14"}
+{"duration":"6ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 09:29:14","url":"/"}
+{"email":"Test@gmail.com","level":"info","message":"User registered","timestamp":"2026-05-16 09:31:18","userId":2}
+{"level":"info","message":"POST /api/auth/register 201 2427.723 ms - 208","timestamp":"2026-05-16 09:31:18"}
+{"duration":"2430ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":201,"timestamp":"2026-05-16 09:31:18","url":"/api/auth/register"}
+{"level":"info","message":"GET /api/conversations 200 256.744 ms - 2","timestamp":"2026-05-16 09:31:18"}
+{"duration":"262ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 09:31:18","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 241.227 ms - -","timestamp":"2026-05-16 09:31:19"}
+{"duration":"243ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:31:19","url":"/api/conversations"}
+{"level":"info","message":"GET /api/auth/find?email=test@test.com 404 1597.433 ms - 28","timestamp":"2026-05-16 09:31:52"}
+{"duration":"1598ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 09:31:52","url":"/api/auth/find?email=test@test.com"}
+{"level":"info","message":"User connected","socketId":"S7D3VA2x9k-LH2oKAAAB","timestamp":"2026-05-16 09:32:17"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 09:32:17","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 09:32:17","userId":2}
+{"level":"info","message":"GET /api/conversations 304 1606.445 ms - -","timestamp":"2026-05-16 09:32:19"}
+{"duration":"1607ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:32:19","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 226.753 ms - -","timestamp":"2026-05-16 09:32:19"}
+{"duration":"227ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:32:19","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-05-16 09:32:22","userId":2}
+{"level":"info","message":"User disconnected","socketId":"S7D3VA2x9k-LH2oKAAAB","timestamp":"2026-05-16 09:32:22"}
+{"level":"info","message":"User connected","socketId":"IRvA0wUHlsPf1qgpAAAD","timestamp":"2026-05-16 09:32:22"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 09:32:22","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 09:32:22","userId":2}
+{"level":"info","message":"GET /api/conversations 304 227.065 ms - -","timestamp":"2026-05-16 09:32:23"}
+{"duration":"228ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:32:23","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 229.060 ms - -","timestamp":"2026-05-16 09:32:23"}
+{"duration":"230ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:32:23","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-05-16 09:32:26","userId":2}
+{"level":"info","message":"User disconnected","socketId":"IRvA0wUHlsPf1qgpAAAD","timestamp":"2026-05-16 09:32:26"}
+{"level":"info","message":"User connected","socketId":"onSKE1WcsBKwpN6iAAAF","timestamp":"2026-05-16 09:33:01"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 09:33:01","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 09:33:01","userId":2}
+{"level":"info","message":"GET /api/conversations 304 1688.594 ms - -","timestamp":"2026-05-16 09:33:02"}
+{"duration":"1689ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:33:02","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 239.753 ms - -","timestamp":"2026-05-16 09:33:02"}
+{"duration":"241ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:33:02","url":"/api/conversations"}
+{"email":"Test@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 09:33:09","userId":2}
+{"level":"info","message":"POST /api/auth/login 200 376.941 ms - 208","timestamp":"2026-05-16 09:33:09"}
+{"duration":"378ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 09:33:09","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 09:33:09","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 09:33:09","userId":2}
+{"level":"info","message":"GET /api/conversations 304 239.983 ms - -","timestamp":"2026-05-16 09:33:10"}
+{"duration":"241ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:33:10","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 240.007 ms - -","timestamp":"2026-05-16 09:33:10"}
+{"duration":"241ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 09:33:10","url":"/api/conversations"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 15:40:35"}
+{"level":"info","message":"User connected","socketId":"yVemnDdoZeeWIIVxAAAB","timestamp":"2026-05-16 15:41:16"}
+{"level":"info","message":"User disconnected","socketId":"yVemnDdoZeeWIIVxAAAB","timestamp":"2026-05-16 15:41:21"}
+{"level":"info","message":"User connected","socketId":"qA-sUrogAuspslacAAAD","timestamp":"2026-05-16 15:41:21"}
+{"email":"Test@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 15:43:17","userId":2}
+{"level":"info","message":"POST /api/auth/login 200 1780.886 ms - 208","timestamp":"2026-05-16 15:43:17"}
+{"duration":"1781ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 15:43:17","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:43:17","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:43:17","userId":2}
+{"level":"info","message":"GET /api/conversations 304 243.777 ms - -","timestamp":"2026-05-16 15:43:18"}
+{"duration":"244ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:43:18","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 225.647 ms - -","timestamp":"2026-05-16 15:43:18"}
+{"duration":"226ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:43:18","url":"/api/conversations"}
+{"email":"Test@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 15:43:26","userId":2}
+{"level":"info","message":"POST /api/auth/login 200 355.890 ms - 208","timestamp":"2026-05-16 15:43:26"}
+{"duration":"356ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 15:43:26","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:43:27","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:43:27","userId":2}
+{"level":"info","message":"GET /api/conversations 304 226.718 ms - -","timestamp":"2026-05-16 15:43:27"}
+{"duration":"228ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:43:27","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 227.350 ms - -","timestamp":"2026-05-16 15:43:27"}
+{"duration":"228ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:43:27","url":"/api/conversations"}
+{"email":"TEST2@gmail.com","level":"info","message":"User registered","timestamp":"2026-05-16 15:45:19","userId":3}
+{"level":"info","message":"POST /api/auth/register 201 1966.104 ms - 210","timestamp":"2026-05-16 15:45:19"}
+{"duration":"1968ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":201,"timestamp":"2026-05-16 15:45:19","url":"/api/auth/register"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:45:19","userId":3}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:45:19","userId":3}
+{"level":"info","message":"GET /api/conversations 304 210.855 ms - -","timestamp":"2026-05-16 15:45:19"}
+{"duration":"212ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:45:19","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 212.354 ms - -","timestamp":"2026-05-16 15:45:19"}
+{"duration":"214ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:45:19","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 3.321 ms - 107","timestamp":"2026-05-16 15:45:31"}
+{"duration":"4ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 15:45:31","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.212 ms - 107","timestamp":"2026-05-16 15:45:36"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 15:45:36","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.360 ms - 107","timestamp":"2026-05-16 15:45:37"}
+{"duration":"3ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 15:45:37","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.190 ms - 107","timestamp":"2026-05-16 15:45:38"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 15:45:38","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.193 ms - 107","timestamp":"2026-05-16 15:45:38"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 15:45:38","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.485 ms - 107","timestamp":"2026-05-16 15:45:38"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 15:45:38","url":"/api/conversations"}
+{"email":"Test@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 15:45:53","userId":2}
+{"level":"info","message":"POST /api/auth/login 200 1765.803 ms - 208","timestamp":"2026-05-16 15:45:53"}
+{"duration":"1766ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 15:45:53","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:45:53","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:45:53","userId":2}
+{"level":"info","message":"GET /api/conversations 304 234.058 ms - -","timestamp":"2026-05-16 15:45:53"}
+{"duration":"235ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:45:53","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 232.681 ms - -","timestamp":"2026-05-16 15:45:53"}
+{"duration":"233ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:45:53","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.309 ms - 107","timestamp":"2026-05-16 15:46:05"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 15:46:05","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.403 ms - 107","timestamp":"2026-05-16 15:46:25"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 15:46:25","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-05-16 15:46:29","userId":2}
+{"level":"info","message":"User disconnected","socketId":"qA-sUrogAuspslacAAAD","timestamp":"2026-05-16 15:46:29"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 15:53:05"}
+{"level":"info","message":"User connected","socketId":"Xw4R12RN7jKpP7OWAAAB","timestamp":"2026-05-16 15:53:31"}
+{"email":"Test@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 15:53:41","userId":2}
+{"level":"info","message":"POST /api/auth/login 200 1835.441 ms - 208","timestamp":"2026-05-16 15:53:41"}
+{"duration":"1836ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 15:53:41","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:53:41","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 15:53:41","userId":2}
+{"level":"info","message":"GET /api/conversations 304 240.296 ms - -","timestamp":"2026-05-16 15:53:41"}
+{"duration":"243ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:53:41","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 220.020 ms - -","timestamp":"2026-05-16 15:53:41"}
+{"duration":"221ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 15:53:41","url":"/api/conversations"}
+{"level":"info","message":"GET /api/auth/find?email=test2@gmail.com 404 1709.302 ms - 28","timestamp":"2026-05-16 15:54:00"}
+{"duration":"1711ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 15:54:00","url":"/api/auth/find?email=test2@gmail.com"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 16:00:28"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 16:02:17"}
+{"level":"info","message":"User connected","socketId":"SK0QrDVVbTx52psuAAAB","timestamp":"2026-05-16 16:02:51"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:02:51","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:02:51","userId":2}
+{"level":"info","message":"GET /api/conversations 304 1772.862 ms - -","timestamp":"2026-05-16 16:02:53"}
+{"duration":"1776ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:02:53","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 235.121 ms - -","timestamp":"2026-05-16 16:02:53"}
+{"duration":"236ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:02:53","url":"/api/conversations"}
+{"level":"info","message":"GET /api/auth/find?email=Test2@gmail.com 404 1547.820 ms - 28","timestamp":"2026-05-16 16:03:12"}
+{"duration":"1550ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 16:03:12","url":"/api/auth/find?email=Test2@gmail.com"}
+{"level":"info","message":"GET /api/auth/find?email=Test2@gmail.com 404 219.100 ms - 28","timestamp":"2026-05-16 16:03:13"}
+{"duration":"222ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":404,"timestamp":"2026-05-16 16:03:13","url":"/api/auth/find?email=Test2@gmail.com"}
+{"email":"Test@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 16:03:26","userId":2}
+{"level":"info","message":"POST /api/auth/login 200 1687.274 ms - 208","timestamp":"2026-05-16 16:03:26"}
+{"duration":"1688ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 16:03:26","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:03:26","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:03:26","userId":2}
+{"level":"info","message":"GET /api/conversations 304 219.580 ms - -","timestamp":"2026-05-16 16:03:26"}
+{"duration":"221ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:03:26","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 219.647 ms - -","timestamp":"2026-05-16 16:03:26"}
+{"duration":"221ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:03:26","url":"/api/conversations"}
+{"level":"info","message":"GET /api/auth/find?email=TEST2@gmail.com 200 1625.183 ms - 53","timestamp":"2026-05-16 16:03:41"}
+{"duration":"1626ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:03:41","url":"/api/auth/find?email=TEST2@gmail.com"}
+{"level":"info","message":"POST /api/conversations 201 727.863 ms - 37","timestamp":"2026-05-16 16:03:42"}
+{"duration":"729ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":201,"timestamp":"2026-05-16 16:03:42","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 200 234.550 ms - 125","timestamp":"2026-05-16 16:03:42"}
+{"duration":"236ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:03:42","url":"/api/conversations"}
+{"conversationId":1,"level":"info","message":"User joined conversation","socketId":"SK0QrDVVbTx52psuAAAB","timestamp":"2026-05-16 16:03:43"}
+{"level":"info","message":"GET /api/messages/1 200 464.864 ms - 2","timestamp":"2026-05-16 16:03:44"}
+{"duration":"467ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:03:44","url":"/api/messages/1"}
+{"conversationId":1,"duration":"1824ms","level":"info","message":"Message sent","messageId":1,"senderId":2,"timestamp":"2026-05-16 16:03:56","type":"text"}
+{"level":"info","message":"POST /api/messages 201 1826.376 ms - 138","timestamp":"2026-05-16 16:03:56"}
+{"duration":"1828ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":201,"timestamp":"2026-05-16 16:03:56","url":"/api/messages"}
+{"level":"info","message":"GET /api/messages/1 200 455.833 ms - 145","timestamp":"2026-05-16 16:03:56"}
+{"duration":"457ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:03:56","url":"/api/messages/1"}
+{"conversationId":1,"duration":"5861ms","level":"info","message":"Message sent","messageId":2,"senderId":2,"timestamp":"2026-05-16 16:04:33","type":"image"}
+{"level":"info","message":"POST /api/messages 201 5914.001 ms - 4523815","timestamp":"2026-05-16 16:04:33"}
+{"duration":"5919ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":201,"timestamp":"2026-05-16 16:04:33","url":"/api/messages"}
+{"level":"info","message":"GET /api/messages/1 200 1168.279 ms - 4523966","timestamp":"2026-05-16 16:04:35"}
+{"duration":"1172ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:04:35","url":"/api/messages/1"}
+{"level":"info","message":"User offline","timestamp":"2026-05-16 16:05:16","userId":2}
+{"level":"info","message":"User disconnected","socketId":"SK0QrDVVbTx52psuAAAB","timestamp":"2026-05-16 16:05:16"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 16:19:05"}
+{"level":"info","message":"User connected","socketId":"4hJ_KkkMVpyHQH6eAAAB","timestamp":"2026-05-16 16:19:20"}
+{"email":"TEST2@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 16:19:30","userId":3}
+{"level":"info","message":"POST /api/auth/login 200 1833.300 ms - 210","timestamp":"2026-05-16 16:19:30"}
+{"duration":"1833ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 16:19:30","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:19:30","userId":3}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:19:30","userId":3}
+{"level":"info","message":"GET /api/conversations 200 243.395 ms - 123","timestamp":"2026-05-16 16:19:31"}
+{"duration":"245ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:19:31","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 218.859 ms - -","timestamp":"2026-05-16 16:19:31"}
+{"duration":"219ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:19:31","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 2.767 ms - 107","timestamp":"2026-05-16 16:19:45"}
+{"duration":"3ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 16:19:45","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.338 ms - 107","timestamp":"2026-05-16 16:19:50"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 16:19:50","url":"/api/conversations"}
+{"email":"Test@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 16:19:59","userId":2}
+{"level":"info","message":"POST /api/auth/login 200 1719.459 ms - 208","timestamp":"2026-05-16 16:19:59"}
+{"duration":"1719ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 16:19:59","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:19:59","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:19:59","userId":2}
+{"level":"info","message":"GET /api/conversations 200 225.372 ms - 125","timestamp":"2026-05-16 16:20:00"}
+{"duration":"226ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:20:00","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 224.779 ms - -","timestamp":"2026-05-16 16:20:00"}
+{"duration":"226ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:20:00","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.172 ms - 107","timestamp":"2026-05-16 16:20:17"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 16:20:17","url":"/api/conversations"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 16:25:50"}
+{"env":"development","level":"info","message":"Server started","port":"5001","timestamp":"2026-05-16 16:27:12"}
+{"level":"info","message":"User connected","socketId":"fuj4HVd2WPYX7jmDAAAB","timestamp":"2026-05-16 16:27:29"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:27:29","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:27:29","userId":2}
+{"level":"info","message":"GET /api/conversations 304 1927.442 ms - -","timestamp":"2026-05-16 16:27:31"}
+{"duration":"1931ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:27:31","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 707.432 ms - -","timestamp":"2026-05-16 16:27:31"}
+{"duration":"709ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:27:31","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-05-16 16:27:33","userId":2}
+{"level":"info","message":"User disconnected","socketId":"fuj4HVd2WPYX7jmDAAAB","timestamp":"2026-05-16 16:27:33"}
+{"level":"info","message":"User connected","socketId":"K1f80vohyjX83DsTAAAD","timestamp":"2026-05-16 16:27:33"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:27:33","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:27:33","userId":2}
+{"level":"info","message":"GET /api/conversations 304 218.530 ms - -","timestamp":"2026-05-16 16:27:33"}
+{"duration":"220ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:27:33","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 217.208 ms - -","timestamp":"2026-05-16 16:27:34"}
+{"duration":"218ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:27:34","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-05-16 16:27:39","userId":2}
+{"level":"info","message":"User disconnected","socketId":"K1f80vohyjX83DsTAAAD","timestamp":"2026-05-16 16:27:39"}
+{"level":"info","message":"User connected","socketId":"nE4Pj84-mtlEDYiAAAAF","timestamp":"2026-05-16 16:27:39"}
+{"email":"TEST2@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 16:28:03","userId":3}
+{"level":"info","message":"POST /api/auth/login 200 1766.961 ms - 210","timestamp":"2026-05-16 16:28:03"}
+{"duration":"1768ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 16:28:03","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:28:03","userId":3}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:28:03","userId":3}
+{"level":"info","message":"GET /api/conversations 200 227.775 ms - 123","timestamp":"2026-05-16 16:28:03"}
+{"duration":"229ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:28:03","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 227.482 ms - -","timestamp":"2026-05-16 16:28:04"}
+{"duration":"228ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:28:04","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 5.640 ms - 107","timestamp":"2026-05-16 16:28:28"}
+{"duration":"7ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 16:28:28","url":"/api/conversations"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:31:54","userId":3}
+{"level":"info","message":"GET /api/conversations 304 1611.287 ms - -","timestamp":"2026-05-16 16:31:56"}
+{"duration":"1613ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:31:56","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-05-16 16:32:00","userId":3}
+{"level":"info","message":"User disconnected","socketId":"nE4Pj84-mtlEDYiAAAAF","timestamp":"2026-05-16 16:32:00"}
+{"level":"info","message":"User connected","socketId":"mcG6Ed_o9a7fZEyhAAAH","timestamp":"2026-05-16 16:32:02"}
+{"level":"info","message":"User disconnected","socketId":"mcG6Ed_o9a7fZEyhAAAH","timestamp":"2026-05-16 16:32:03"}
+{"level":"info","message":"User connected","socketId":"bUj2YNwDm088wG6GAAAJ","timestamp":"2026-05-16 16:32:04"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:32:04","userId":3}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:32:04","userId":3}
+{"level":"info","message":"GET /api/conversations 304 237.884 ms - -","timestamp":"2026-05-16 16:32:04"}
+{"duration":"238ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:32:04","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 224.294 ms - -","timestamp":"2026-05-16 16:32:04"}
+{"duration":"225ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:32:04","url":"/api/conversations"}
+{"email":"Test@gmail.com","level":"info","message":"User logged in","timestamp":"2026-05-16 16:32:38","userId":2}
+{"level":"info","message":"POST /api/auth/login 200 1825.896 ms - 208","timestamp":"2026-05-16 16:32:38"}
+{"duration":"1826ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":200,"timestamp":"2026-05-16 16:32:38","url":"/api/auth/login"}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:32:38","userId":2}
+{"level":"info","message":"User online","timestamp":"2026-05-16 16:32:38","userId":2}
+{"level":"info","message":"GET /api/conversations 200 244.793 ms - 125","timestamp":"2026-05-16 16:32:38"}
+{"duration":"245ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":200,"timestamp":"2026-05-16 16:32:38","url":"/api/conversations"}
+{"level":"info","message":"GET /api/conversations 304 234.708 ms - -","timestamp":"2026-05-16 16:32:38"}
+{"duration":"237ms","ip":"::1","level":"info","message":"API Request","method":"GET","status":304,"timestamp":"2026-05-16 16:32:38","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 0.981 ms - 107","timestamp":"2026-05-16 16:32:49"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 16:32:49","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.207 ms - 107","timestamp":"2026-05-16 16:32:50"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 16:32:50","url":"/api/conversations"}
+{"level":"info","message":"POST /api/conversations 400 1.229 ms - 107","timestamp":"2026-05-16 16:32:51"}
+{"duration":"2ms","ip":"::1","level":"info","message":"API Request","method":"POST","status":400,"timestamp":"2026-05-16 16:32:51","url":"/api/conversations"}
+{"level":"info","message":"User offline","timestamp":"2026-05-16 16:32:54","userId":3}
+{"level":"info","message":"User disconnected","socketId":"bUj2YNwDm088wG6GAAAJ","timestamp":"2026-05-16 16:32:54"}
