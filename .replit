@@ -39,3 +39,8 @@ externalPort = 3000
 
 [userenv.shared]
 ALLOWED_ORIGINS = "https://whatsapp-clone-git-main-r-dhanush.vercel.app,http://localhost:3000,*.replit.dev"
+RECAPTCHA_SITE_KEY = "6LdOITwtAAAAAIJ8h2d5nPhXbm6Mxuuf3QZ6GUQl"
+
+[userenv.development]
+
+[userenv.production]

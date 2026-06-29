@@ -3,16 +3,36 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "@workspace/db";
 import { protect } from "../middleware/auth";
-import { JWT_SECRET } from "../config";
+import { JWT_SECRET, RECAPTCHA_SECRET_KEY } from "../config";
 
 const router = Router();
 
+async function verifyRecaptcha(token: string): Promise<boolean> {
+  if (!RECAPTCHA_SECRET_KEY || !token) return false;
+  const params = new URLSearchParams();
+  params.append("secret", RECAPTCHA_SECRET_KEY);
+  params.append("response", token);
+  const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+    method: "POST",
+    body: params,
+  });
+  const data = await res.json();
+  return data.success === true;
+}
+
 router.post("/register", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, recaptchaToken } = req.body;
     if (!username || !email || !password) {
       res.status(400).json({ message: "All fields are required" });
       return;
+    }
+    if (RECAPTCHA_SECRET_KEY) {
+      const valid = await verifyRecaptcha(recaptchaToken);
+      if (!valid) {
+        res.status(400).json({ message: "reCAPTCHA verification failed" });
+        return;
+      }
     }
     const existing = await pool.query("SELECT id FROM users WHERE LOWER(email) = LOWER($1)", [email]);
     if (existing.rows.length > 0) {
@@ -34,10 +54,17 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
 
 router.post("/login", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    const { email, password, recaptchaToken } = req.body;
     if (!email || !password) {
       res.status(400).json({ message: "Email and password required" });
       return;
+    }
+    if (RECAPTCHA_SECRET_KEY) {
+      const valid = await verifyRecaptcha(recaptchaToken);
+      if (!valid) {
+        res.status(400).json({ message: "reCAPTCHA verification failed" });
+        return;
+      }
     }
     const result = await pool.query("SELECT * FROM users WHERE LOWER(email) = LOWER($1)", [email]);
     if (result.rows.length === 0) {
