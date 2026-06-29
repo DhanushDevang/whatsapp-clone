@@ -41,6 +41,10 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
     }
     const result = await pool.query("SELECT * FROM users WHERE LOWER(email) = LOWER($1)", [email]);
     if (result.rows.length === 0) {
+      await pool.query(
+        "INSERT INTO login_logs (email, ip_address, status) VALUES ($1, $2, 'failed')",
+        [email, req.ip]
+      );
       res.status(400).json({ message: "Invalid credentials" });
       return;
     }
@@ -48,6 +52,10 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
 
     // 1) Check account lock
     if (user.locked_until && new Date(user.locked_until) > new Date()) {
+      await pool.query(
+        "INSERT INTO login_logs (user_id, email, ip_address, status) VALUES ($1, $2, $3, 'locked')",
+        [user.id, email, req.ip]
+      );
       res.status(423).json({ message: "Account locked. Too many failed attempts. Try again in 15 minutes." });
       return;
     }
@@ -60,10 +68,18 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
       if (failed >= 5) {
         const lockedUntil = new Date(Date.now() + 15 * 60 * 1000);
         await pool.query("UPDATE users SET failed_attempts = $1, locked_until = $2 WHERE id = $3", [failed, lockedUntil, user.id]);
+        await pool.query(
+          "INSERT INTO login_logs (user_id, email, ip_address, status) VALUES ($1, $2, $3, 'locked')",
+          [user.id, email, req.ip]
+        );
         res.status(423).json({ message: "Account locked. Too many failed attempts. Try again in 15 minutes." });
         return;
       }
       await pool.query("UPDATE users SET failed_attempts = $1 WHERE id = $2", [failed, user.id]);
+      await pool.query(
+        "INSERT INTO login_logs (user_id, email, ip_address, status) VALUES ($1, $2, $3, 'failed')",
+        [user.id, email, req.ip]
+      );
       res.status(400).json({ message: "Invalid credentials" });
       return;
     }
@@ -72,6 +88,11 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
     if (user.failed_attempts > 0 || user.locked_until) {
       await pool.query("UPDATE users SET failed_attempts = 0, locked_until = NULL WHERE id = $1", [user.id]);
     }
+
+    await pool.query(
+      "INSERT INTO login_logs (user_id, email, ip_address, status) VALUES ($1, $2, $3, 'success')",
+      [user.id, email, req.ip]
+    );
 
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
     res.json({ user: { id: user.id, username: user.username, email: user.email }, token });
