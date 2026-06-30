@@ -6,3 +6,5 @@ if (!process.env.JWT_SECRET) {
 }
 
 export const JWT_SECRET = process.env.JWT_SECRET as string;
+export const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY as string;
+export const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY as string;

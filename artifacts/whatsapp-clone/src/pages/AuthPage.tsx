@@ -1,7 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (cb: () => void) => void;
+      render: (container: HTMLElement, options: Record<string, unknown>) => number;
+      reset: (widgetId?: number) => void;
+      getResponse: (widgetId?: number) => string;
+    };
+    onloadCallback?: () => void;
+  }
+}
+
 const API_URL = "/api";
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
 
 export default function AuthPage() {
@@ -10,7 +23,52 @@ export default function AuthPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState("");
+  const [recaptchaReady, setRecaptchaReady] = useState(false);
   const { login } = useAuth();
+  const recaptchaRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    let checkInterval: ReturnType<typeof setInterval>;
+
+    const initRecaptcha = () => {
+      if (!mounted || !window.grecaptcha || !recaptchaRef.current || !RECAPTCHA_SITE_KEY) return;
+      try {
+        if (widgetIdRef.current !== null) {
+          window.grecaptcha.reset(widgetIdRef.current);
+        }
+        widgetIdRef.current = window.grecaptcha.render(recaptchaRef.current, {
+          sitekey: RECAPTCHA_SITE_KEY,
+          callback: (token: string) => { if (mounted) setRecaptchaToken(token); },
+          "expired-callback": () => { if (mounted) setRecaptchaToken(""); },
+        });
+        if (mounted) setRecaptchaReady(true);
+      } catch (e) {
+        console.error("reCAPTCHA render error:", e);
+      }
+    };
+
+    if (window.grecaptcha && window.grecaptcha.render) {
+      initRecaptcha();
+    } else {
+      checkInterval = setInterval(() => {
+        if (window.grecaptcha && window.grecaptcha.render) {
+          clearInterval(checkInterval);
+          initRecaptcha();
+        }
+      }, 300);
+    }
+
+    return () => {
+      mounted = false;
+      if (checkInterval) clearInterval(checkInterval);
+      if (widgetIdRef.current !== null && window.grecaptcha) {
+        try { window.grecaptcha.reset(widgetIdRef.current); } catch (e) { /* ignore */ }
+      }
+    };
+  }, [isLogin]);
 
   const validateEmail = (email: string) => {
     if (email.includes(" ")) return { valid: false, message: "Email cannot contain spaces" };
@@ -43,10 +101,16 @@ export default function AuthPage() {
       const userVal = validateUsername(form.username);
       if (!userVal.valid) { setError(userVal.message); return; }
     }
+    if (RECAPTCHA_SITE_KEY && !recaptchaToken) {
+      setError("Please complete the reCAPTCHA verification");
+      return;
+    }
     setLoading(true);
     try {
       const url = isLogin ? `${API_URL}/auth/login` : `${API_URL}/auth/register`;
-      const payload = isLogin ? { email: form.email, password: form.password } : form;
+      const payload = isLogin
+        ? { email: form.email, password: form.password, recaptchaToken }
+        : { ...form, recaptchaToken };
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -59,6 +123,10 @@ export default function AuthPage() {
       setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
+      if (widgetIdRef.current !== null && window.grecaptcha) {
+        try { window.grecaptcha.reset(widgetIdRef.current); } catch (e) { /* ignore */ }
+      }
+      setRecaptchaToken("");
     }
   };
 
@@ -132,6 +200,11 @@ export default function AuthPage() {
               )}
             </div>
             {error && <div style={s.error}>{error}</div>}
+            {RECAPTCHA_SITE_KEY && (
+              <div style={{ display: "flex", justifyContent: "center", minHeight: "78px" }}>
+                <div ref={recaptchaRef} />
+              </div>
+            )}
             <button style={{ ...s.btn, opacity: loading ? 0.7 : 1 }} onClick={handleSubmit} disabled={loading}>
               {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
             </button>

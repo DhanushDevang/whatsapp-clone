@@ -12,6 +12,7 @@ import { JWT_SECRET } from "./config";
 import { pool } from "@workspace/db";
 
 const app: Express = express();
+app.set("trust proxy", 1);
 const httpServer = createServer(app);
 
 const generalLimiter = rateLimit({
@@ -31,7 +32,18 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || "replit.dev,localhost,ver
   .map((o) => o.trim());
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    if (!origin || allowedOrigins.some((d) => origin.includes(d))) {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+    const allowed = allowedOrigins.some((d) => {
+      if (d.startsWith("*.")) {
+        const suffix = d.slice(1); // remove leading *
+        return origin.includes(suffix);
+      }
+      return origin.includes(d);
+    });
+    if (allowed) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -51,7 +63,18 @@ export const io = new Server(httpServer, {
   path: "/api/socket.io",
   cors: {
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      if (!origin || allowedOrigins.some((d) => origin.includes(d))) {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+      const allowed = allowedOrigins.some((d) => {
+        if (d.startsWith("*.")) {
+          const suffix = d.slice(1);
+          return origin.includes(suffix);
+        }
+        return origin.includes(d);
+      });
+      if (allowed) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -205,3 +228,5 @@ io.on("connection", (socket) => {
 });
 
 export default httpServer;
+export { app };
+
