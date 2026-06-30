@@ -27,6 +27,7 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: "All fields are required" });
       return;
     }
+
     if (RECAPTCHA_SECRET_KEY) {
       const valid = await verifyRecaptcha(recaptchaToken);
       if (!valid) {
@@ -34,6 +35,7 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
         return;
       }
     }
+
     const existing = await pool.query("SELECT id FROM users WHERE LOWER(email) = LOWER($1)", [email]);
     if (existing.rows.length > 0) {
       res.status(400).json({ message: "User already exists" });
@@ -45,7 +47,13 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email",
       [username, email, hashedPassword]
     );
-    const token = jwt.sign({ id: newUser.rows[0].id }, JWT_SECRET, { expiresIn: "7d" });
+
+    // tokenVersion starts at 0, matches the fresh users.token_version default
+    const token = jwt.sign(
+      { id: newUser.rows[0].id, tokenVersion: 0 },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
     res.status(201).json({ user: newUser.rows[0], token });
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -59,6 +67,7 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: "Email and password required" });
       return;
     }
+
     if (RECAPTCHA_SECRET_KEY) {
       const valid = await verifyRecaptcha(recaptchaToken);
       if (!valid) {
@@ -66,6 +75,7 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
         return;
       }
     }
+
     const result = await pool.query("SELECT * FROM users WHERE LOWER(email) = LOWER($1)", [email]);
     if (result.rows.length === 0) {
       await pool.query(
@@ -121,7 +131,12 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
       [user.id, email, req.ip]
     );
 
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
+    // tokenVersion included so /logout-all can invalidate this token later
+    const token = jwt.sign(
+      { id: user.id, tokenVersion: user.token_version || 0 },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
     res.json({ user: { id: user.id, username: user.username, email: user.email }, token });
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -149,4 +164,18 @@ router.get("/find", protect, async (req: Request, res: Response): Promise<void> 
   }
 });
 
+router.post("/logout-all", protect, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    await pool.query(
+      "UPDATE users SET token_version = COALESCE(token_version, 0) + 1 WHERE id = $1",
+      [userId]
+    );
+    res.json({ message: "Logged out from all devices" });
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 export default router;
+

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+  import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 
 declare global {
@@ -240,3 +240,5 @@ const s: Record<string, React.CSSProperties> = {
   error: { background: "#fff0f0", color: "#e53935", fontSize: "13px", padding: "10px 14px", borderRadius: "8px", border: "1px solid #ffd0d0" },
   btn: { padding: "13px", background: "#25D366", color: "#fff", border: "none", borderRadius: "10px", fontSize: "15px", fontWeight: "600", cursor: "pointer", marginTop: "4px" },
 };
+
+  GH_EOF

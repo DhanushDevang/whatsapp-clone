@@ -7,6 +7,7 @@ export const usersTable = pgTable("users", {
   username: varchar("username", { length: 255 }).notNull(),
   failedAttempts: integer("failed_attempts").default(0),
   lockedUntil: timestamp("locked_until"),
+  tokenVersion: integer("token_version").default(0),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -38,3 +39,4 @@ export type User = typeof usersTable.$inferSelect;
 export type Conversation = typeof conversationsTable.$inferSelect;
 export type ConversationParticipant = typeof conversationParticipantsTable.$inferSelect;
 export type Message = typeof messagesTable.$inferSelect;
+
