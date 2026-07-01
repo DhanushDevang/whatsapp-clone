@@ -1,5 +1,8 @@
 {
   "buildCommand": "pnpm --filter whatsapp-clone run build",
-  "outputDirectory": "artifacts/whatsapp-clone/dist",
-  "installCommand": "pnpm install"
-}
+  "outputDirectory": "artifacts/whatsapp-clone/dist/public",
+  "installCommand": "pnpm install",
+  "env": {
+    "PORT": "3000",
+    "BASE_PATH": "/"
+  }
