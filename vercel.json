@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd artifacts/whatsapp-clone && npm install && npm run build",
+  "buildCommand": "cd artifacts/whatsapp-clone && pnpm install && pnpm run build",
   "outputDirectory": "artifacts/whatsapp-clone/dist",
-  "installCommand": "cd artifacts/whatsapp-clone && npm install"
+  "installCommand": "pnpm install --filter whatsapp-clone"
 }
