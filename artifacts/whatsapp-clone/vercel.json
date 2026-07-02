@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://36eda17d-63fc-4dab-aa6d-9b53e4832ea9-00-3jwqrspawp1yz.sisko.replit.dev/api/:path*"
+    }
+  ]
+}

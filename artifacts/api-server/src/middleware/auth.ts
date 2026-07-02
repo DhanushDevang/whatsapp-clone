@@ -37,3 +37,4 @@ export const protect = async (req: Request, res: Response, next: NextFunction): 
     res.status(401).json({ message: "Token is not valid" });
   }
 };
+

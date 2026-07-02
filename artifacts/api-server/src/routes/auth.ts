@@ -178,3 +178,4 @@ router.post("/logout-all", protect, async (req: Request, res: Response): Promise
 });
 
 export default router;
+
